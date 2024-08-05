@@ -12,41 +12,32 @@
 #include <vector>
 #include <list>
 #include <memory>
+#include "List.h"
 
 class List;
 
 class Prod {
 public:
-    Prod(const std::string& name, std::shared_ptr<List> lst, int amount = 1)
-    : name(name), list(std::move(lst)), amount(amount) {}
+    Prod(std::string name, int amount = 1) : name(std::move(name)), amount(amount) {}
 
-    void setAmount(int newAmount) {
-        amount = newAmount;
-        NotifyList();
-        if (amount == 0) {
-            list.removeProd(this);
-            delete this;
-        }
-    }
+    void setAmount(int newAmount);
 
     int getAmount() const {
         return amount;
     }
 
-    void setList(std::shared_ptr<List> lst) {
-        list = std::move(lst);
-    }
+    void setList(List *lst);
 
     void NotifyList();
 
     std::string getName() const {
         return name;
     }
+
 private:
     std::string name;
-    unsigned short int amount;
-    std::shared_ptr<List> list;
+    unsigned short int amount{};
+    List *list;
 };
-
 
 #endif //SHOPPINGLIST_PROD_H
