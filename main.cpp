@@ -13,6 +13,9 @@ int main(){
     list2.addProd(Prod("Hamburger", 5));
     list2.addProd(Prod("Carbonella"));
 
+    //list1.setAmount("Uova", 4);
+    //list2.removeProd("Hamburger");
+
     list1.printList();
     list2.printList();
 

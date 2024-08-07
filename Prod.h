@@ -9,24 +9,21 @@
 #include <iostream>
 #include <string>
 #include <utility>
-#include <vector>
 #include <list>
 #include <memory>
-#include "List.h"
 
 class List;
 
-class Prod {
+class Prod : public std::enable_shared_from_this<Prod> {
 public:
-    Prod(std::string name, int amount = 1) : name(std::move(name)), amount(amount) {}
+    explicit Prod(std::string name, int amount = 1, const std::shared_ptr<List>& lst = nullptr)
+            : name(std::move(name)), amount(amount), list(lst) {}
 
     void setAmount(int newAmount);
 
-    int getAmount() const {
+    unsigned short int getAmount() const {
         return amount;
     }
-
-    void setList(List *lst);
 
     void NotifyList();
 
@@ -34,10 +31,12 @@ public:
         return name;
     }
 
+    void setList(const std::shared_ptr<List>& lst) { list = lst;}
+
 private:
     std::string name;
-    unsigned short int amount{};
-    List *list;
+    unsigned short int amount;
+    std::weak_ptr<List> list;
 };
 
 #endif //SHOPPINGLIST_PROD_H
