@@ -19,7 +19,7 @@ public:
     explicit Prod(std::string name, int amount = 1, List *lst = nullptr)
             : name(std::move(name)), amount(amount), list(lst) {}
 
-    void setAmount(int newAmount);
+    void setAmount(int newAmount, bool updateList);
 
     unsigned short int getAmount() const {
         return amount;

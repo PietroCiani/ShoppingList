@@ -27,6 +27,8 @@ public:
 
     Prod searchProd(const std::string& name);
 
+    int searchProdIndex(const std::string& name);
+
     void update(Prod &prod, int diff);
 
     int getNumItems() const {
