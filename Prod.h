@@ -25,8 +25,6 @@ public:
         return amount;
     }
 
-    void NotifyList();
-
     std::string getName() const {
         return name;
     }

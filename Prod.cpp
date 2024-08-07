@@ -5,14 +5,12 @@
 #include "Prod.h"
 #include "List.h"
 
-void Prod::NotifyList() {
-    list->update(*this);
-}
 
 void Prod::setAmount(int newAmount) {
     std::cout << "Cambio quantità: " << amount << " -> " << newAmount << std::endl << std::endl;
+    int diff = newAmount - amount;
     amount = newAmount;
-    NotifyList();
+    list->update(*this, diff);
     if (amount == 0) {
         //list.removeProd(this);
         //delete this;

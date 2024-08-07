@@ -11,9 +11,10 @@ int main(){
 
     list2.addProd(Prod("Salsicce", 10));
     list2.addProd(Prod("Hamburger", 5));
+    list2.addProd("Insalata",3);
     list2.addProd(Prod("Carbonella"));
 
-    //list1.setAmount("Uova", 4);
+    list1.setAmount("Uova", 10);
     //list2.removeProd("Hamburger");
 
     list1.printList();

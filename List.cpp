@@ -21,12 +21,17 @@ void List::addProd(const Prod& prod) {
     NumItems += prod.getAmount();
 }
 
-void List::update(Prod &prod) {
+void List::addProd(const std::string &name, const int &amount) {
+    Prod prod(name, amount);
+    addProd(prod);
+}
+
+void List::update(Prod &prod, int diff) {
     if (prod.getAmount() == 0) {
         removeProd(prod);
     }
     else {
-        NumItems += prod.getAmount();
+        NumItems += diff;
     }
 }
 
@@ -47,5 +52,9 @@ Prod List::searchProd(const std::string &name) {
 
 void List::setAmount(Prod &prod, int newAmount) {
     this->searchProd(prod.getName()).setAmount(newAmount);
+}
+
+void List::setAmount(const std::string &name, int newAmount) {
+    searchProd(name).setAmount(newAmount);
 }
 
