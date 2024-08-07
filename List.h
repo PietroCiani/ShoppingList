@@ -19,11 +19,11 @@ public:
 
     void addProd(const Prod& prod);
 
-    void setAmount(const std::string& name, int amount);
+    void setAmount(Prod &prod, int newAmount);
 
-    std::shared_ptr<Prod> searchProd(const std::string& name);
+    Prod searchProd(const std::string& name);
 
-    void update(std::shared_ptr<Prod> prod);
+    void update(Prod &prod);
 
     int getNumItems() const {
         return NumItems;
@@ -33,17 +33,11 @@ public:
 
 //    void removeProd(const std::string &name);
 //
-    void removeProd(std::shared_ptr<Prod> prod);
+    void removeProd(const Prod &prod);
 
-    /*~List() {
-        std::cout << "Distruggo lista e tutti i prodotti..." << std::endl;
-        for (auto prod : Items) {
-            delete &prod;
-        }
-    }*/
 private:
     std::string Name;
-    std::vector<std::shared_ptr<Prod>> Items;
+    std::vector<Prod> Items = {};
     unsigned short int NumItems;
 
 

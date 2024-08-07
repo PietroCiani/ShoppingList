@@ -14,9 +14,9 @@
 
 class List;
 
-class Prod : public std::enable_shared_from_this<Prod> {
+class Prod {
 public:
-    explicit Prod(std::string name, int amount = 1, const std::shared_ptr<List>& lst = nullptr)
+    explicit Prod(std::string name, int amount = 1, List *lst = nullptr)
             : name(std::move(name)), amount(amount), list(lst) {}
 
     void setAmount(int newAmount);
@@ -31,12 +31,18 @@ public:
         return name;
     }
 
-    void setList(const std::shared_ptr<List>& lst) { list = lst;}
+    void setList(List *lst) {
+        list = lst; //FIXME: try to use smart ptr (shared?)
+    }
+
+    bool operator==(const Prod &other) const {
+        return name == other.name;
+    }
 
 private:
     std::string name;
     unsigned short int amount;
-    std::weak_ptr<List> list;
+    List* list;
 };
 
 #endif //SHOPPINGLIST_PROD_H

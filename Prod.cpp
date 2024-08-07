@@ -6,9 +6,7 @@
 #include "List.h"
 
 void Prod::NotifyList() {
-    if (auto sharedList = list.lock()) {  // Convert weak_ptr to shared_ptr
-        sharedList->update(shared_from_this());  // Pass a shared_ptr to this product
-    }
+    list->update(*this);
 }
 
 void Prod::setAmount(int newAmount) {
