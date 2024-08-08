@@ -43,7 +43,9 @@ void List::update(Prod &prod, int diff) {
 void List::removeProd(const Prod &prod) {
     std::cout << "Rimuovo " << prod.getAmount() << " '" << prod.getName() << "' dalla lista" << std::endl << std::endl;
     NumItems -= prod.getAmount();
-    //Items.erase(std::remove(Items.begin(), Items.end(), prod), Items.end());
+    Items.erase(std::remove_if(Items.begin(), Items.end(), [&prod](const std::unique_ptr<Prod> &item) {
+        return *item == prod;
+    }), Items.end());
 }
 
 int List::searchProdIndex(const std::string &name) {
