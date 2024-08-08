@@ -34,7 +34,6 @@ void List::update(Prod &prod, int diff) {
         //FIXME: avoid loops
         int index = searchProdIndex(prod.getName());
         if (index != -1) {
-            //Items[index]->setAmount(prod.getAmount(), false);
             NumItems += diff;
         }
     }
@@ -60,12 +59,10 @@ int List::searchProdIndex(const std::string &name) {
 }
 
 void List::setAmount(Prod &prod, int newAmount) {
-    //searchProd(prod.getName()).setAmount(newAmount, true);
     Items[searchProdIndex(prod.getName())]->setAmount(newAmount, true);
 }
 
 void List::setAmount(const std::string &name, int newAmount) {
-    //searchProd(name).setAmount(newAmount, true);
     Items[searchProdIndex(name)]->setAmount(newAmount, true);
 }
 

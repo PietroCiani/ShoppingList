@@ -17,10 +17,11 @@ int main(){
 
     list1.setAmount("Uova", 10);
     list1.setAmount(latte, 2);
-    //list2.removeProd("Hamburger");
+    list1.setAmount(latte, 1);
+    list1.removeProd(latte);
 
     list1.printList();
-    list2.printList();
+    //list2.printList();
 
     return 0;
 };

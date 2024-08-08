@@ -4,6 +4,8 @@ project(ShoppingList)
 set(CMAKE_CXX_STANDARD 14)
 
 include_directories(.)
+add_subdirectory(tests)
+
 
 add_executable(ShoppingList
         List.cpp
