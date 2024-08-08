@@ -9,15 +9,15 @@
 void List::printList() const {
     std::cout << "Lista '"<< Name << "'" << std::endl;
     for (const auto & Item : Items){
-        std::cout << Item.getName() << ": " << Item.getAmount() << std::endl;
+        std::cout << Item->getName() << ": " << Item->getAmount() << std::endl;
     }
     std::cout << "Totale oggetti: " << NumItems << std::endl;
     std::cout << "--------------------" << std::endl;
 }
 
 void List::addProd(const Prod& prod) {
-    Items.push_back(prod);
-    Items.back().setList(this);
+    Items.push_back(std::make_unique<Prod>(prod));
+    Items.back()->setList(this);
     NumItems += prod.getAmount();
 }
 
@@ -34,7 +34,7 @@ void List::update(Prod &prod, int diff) {
         //FIXME: avoid loops
         int index = searchProdIndex(prod.getName());
         if (index != -1) {
-            Items[index].setAmount(prod.getAmount(), false);
+            //Items[index]->setAmount(prod.getAmount(), false);
             NumItems += diff;
         }
     }
@@ -42,34 +42,28 @@ void List::update(Prod &prod, int diff) {
 
 void List::removeProd(const Prod &prod) {
     std::cout << "Rimuovo " << prod.getAmount() << " '" << prod.getName() << "' dalla lista" << std::endl << std::endl;
-    Items.erase(std::remove(Items.begin(), Items.end(), prod), Items.end());
-}
-
-Prod List::searchProd(const std::string &name) {
-    for (auto & prod : Items) {
-        if (prod.getName() == name) {
-            std::cout << "'" << name << "' trovato!" << std::endl;
-            return prod;
-        }
-    }
-    std::cout << "Prodotto non trovato" << std::endl;
+    NumItems -= prod.getAmount();
+    //Items.erase(std::remove(Items.begin(), Items.end(), prod), Items.end());
 }
 
 int List::searchProdIndex(const std::string &name) {
     for (int i = 0; i < Items.size(); i++) {
-        if (Items[i].getName() == name) {
-            std::cout << "'" << name << "' trovato!" << std::endl;
+        if (Items[i]->getName() == name) {
+            //std::cout << "'" << name << "' trovato!" << std::endl;
             return i;
         }
     }
-    std::cout << "Prodotto non trovato" << std::endl;
+    std::cout << "Prodotto '" << name << "' non trovato" << std::endl;
+    return -1;
 }
 
 void List::setAmount(Prod &prod, int newAmount) {
-    searchProd(prod.getName()).setAmount(newAmount, true);
+    //searchProd(prod.getName()).setAmount(newAmount, true);
+    Items[searchProdIndex(prod.getName())]->setAmount(newAmount, true);
 }
 
 void List::setAmount(const std::string &name, int newAmount) {
-    searchProd(name).setAmount(newAmount, true);
+    //searchProd(name).setAmount(newAmount, true);
+    Items[searchProdIndex(name)]->setAmount(newAmount, true);
 }
 

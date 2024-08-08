@@ -16,8 +16,8 @@ class List;
 
 class Prod {
 public:
-    explicit Prod(std::string name, int amount = 1, List *lst = nullptr)
-            : name(std::move(name)), amount(amount), list(lst) {}
+    explicit Prod(const std::string &name, int amount = 1, List *lst = nullptr)
+            : name(name), amount(amount), list(lst) {}
 
     void setAmount(int newAmount, bool updateList);
 

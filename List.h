@@ -25,8 +25,6 @@ public:
 
     void setAmount(const std::string &name, int newAmount);
 
-    Prod searchProd(const std::string& name);
-
     int searchProdIndex(const std::string& name);
 
     void update(Prod &prod, int diff);
@@ -41,7 +39,7 @@ public:
 
 private:
     std::string Name;
-    std::vector<Prod> Items = {};
+    std::vector<std::unique_ptr<Prod>> Items = {};
     unsigned short int NumItems;
 };
 
