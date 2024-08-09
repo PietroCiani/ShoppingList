@@ -7,6 +7,9 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(googletest)
 
 add_executable(ShoppingList_tests
+        ../List.cpp
+        ../Prod.cpp
         List_tests.cpp
+        Prod_tests.cpp
 )
 target_link_libraries(ShoppingList_tests gtest gtest_main)

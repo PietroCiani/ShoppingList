@@ -6,4 +6,13 @@
 
 #include "List.h"
 
-TEST(ListTest, RemoveProd) {}
+TEST(ListTest, RemoveProd) {
+    List list("Casa");
+    list.addProd(Prod("Pane", 2));
+    list.addProd(Prod("Latte", 1));
+    list.removeProd(Prod("Latte"));
+
+    EXPECT_EQ(list.searchProdIndex("Latte"), -1);
+}
+
+
