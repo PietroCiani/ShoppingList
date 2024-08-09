@@ -6,6 +6,22 @@
 
 #include "List.h"
 
+class ListTest : public ::testing::Test {
+protected:
+    List list1, list2;
+
+    ListTest() : list1("Casa"), list2("Grigliata") {}
+
+    void SetUp() override {
+        list1.addProd("Latte");
+        list1.addProd("Uova", 6);
+
+        list2.addProd("Carbonella");
+        list2.addProd("Hamburger", 5);
+        list2.addProd("Salsicce", 10);
+    }
+};
+
 TEST(ListTest, RemoveProd) {
     List list("Casa");
     list.addProd(Prod("Pane", 2));
