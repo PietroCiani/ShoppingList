@@ -15,4 +15,11 @@ TEST(ListTest, RemoveProd) {
     EXPECT_EQ(list.searchProdIndex("Latte"), -1);
 }
 
+TEST(ListTest, SetAmount) {
+    List list("Casa");
+    list.addProd(Prod("Uova", 6));
+    list.setAmount("Uova", 12);
+
+    EXPECT_EQ(list.searchProd("Uova").getAmount(), 12);
+}
 
