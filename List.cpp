@@ -21,7 +21,7 @@ void List::addProd(const Prod& prod) {
     NumItems += prod.getAmount();
 }
 
-void List::addProd(const std::string &name, const int &amount) {
+void List::addProd(const std::string &name, const int &amount = 1) {
     Prod prod(name, amount);
     addProd(prod);
 }
@@ -31,7 +31,6 @@ void List::update(Prod &prod, int diff) {
         removeProd(prod);
     }
     else {
-        //FIXME: avoid loops
         int index = searchProdIndex(prod.getName());
         if (index != -1) {
             NumItems += diff;
@@ -64,5 +63,9 @@ void List::setAmount(Prod &prod, int newAmount) {
 
 void List::setAmount(const std::string &name, int newAmount) {
     Items[searchProdIndex(name)]->setAmount(newAmount, true);
+}
+
+Prod &List::searchProd(const std::string &name) {
+    return *Items[searchProdIndex(name)];
 }
 
