@@ -22,20 +22,22 @@ protected:
     }
 };
 
-TEST(ListTest, RemoveProd) {
-    List list("Casa");
-    list.addProd(Prod("Pane", 2));
-    list.addProd(Prod("Latte", 1));
-    list.removeProd(Prod("Latte"));
+TEST_F(ListTest, AddProd) {
+    list1.addProd("Pane", 3);
 
-    EXPECT_EQ(list.searchProdIndex("Latte"), -1);
+    EXPECT_EQ(list1.searchProdIndex("Pane"), 2);
+    EXPECT_EQ(list1.searchProd("Pane").getAmount(), 3);
 }
 
-TEST(ListTest, SetAmount) {
-    List list("Casa");
-    list.addProd(Prod("Uova", 6));
-    list.setAmount("Uova", 12);
+TEST_F(ListTest, RemoveProd) {
+    list1.removeProd(Prod("Latte"));
 
-    EXPECT_EQ(list.searchProd("Uova").getAmount(), 12);
+    EXPECT_EQ(list1.searchProdIndex("Latte"), -1);
+}
+
+TEST_F(ListTest, SetAmount) {
+    list1.setAmount("Uova", 12);
+
+    EXPECT_EQ(list1.searchProd("Uova").getAmount(), 12);
 }
 

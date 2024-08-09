@@ -21,7 +21,7 @@ void List::addProd(const Prod& prod) {
     NumItems += prod.getAmount();
 }
 
-void List::addProd(const std::string &name, const int &amount = 1) {
+void List::addProd(const std::string &name, const int &amount) {
     Prod prod(name, amount);
     addProd(prod);
 }
