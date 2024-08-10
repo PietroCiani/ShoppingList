@@ -3,46 +3,58 @@
 #include "List.h"
 
 int main(){
-    sf::RenderWindow window(sf::VideoMode(200, 200), "SFML works!");
-    sf::CircleShape shape(100.f);
-    shape.setFillColor(sf::Color::Green);
+    List shoppingList("Casa");
+    shoppingList.addProd("Pane");
+    shoppingList.addProd("Latte", 2);
+    shoppingList.addProd("Uova", 6);
 
-    while (window.isOpen())
-    {
+    sf::Vector2f w(300, 300);
+    sf::RenderWindow window(sf::VideoMode(w.x,w.y), "Shopping List");
+
+    sf::Color bg(40,40,40);
+    sf::Color fg(251,241,199);
+
+    sf::Font font;
+    if (!font.loadFromFile("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf")) {
+        return -1;
+    }
+
+    while (window.isOpen()) {
         sf::Event event;
-        while (window.pollEvent(event))
-        {
+        std::vector<std::unique_ptr<sf::Drawable>> drawables;
+        while (window.pollEvent(event)) {
             if (event.type == sf::Event::Closed)
                 window.close();
         }
+        window.clear(bg);
 
-        window.clear();
-        window.draw(shape);
+        auto title = std::make_unique<sf::Text>();
+        title->setFont(font);
+        title->setString("Lista '"+ shoppingList.getName() +"'");
+        title->setCharacterSize(24);
+        title->setFillColor(fg);
+        title->setPosition(w.x * 0.1, w.y * 0.1);
+        drawables.push_back(std::move(title));
+
+        float yPos = w.y * 0.2;
+        for (int i = 0; i < shoppingList.getItemsSize(); ++i) {
+            Prod prod = shoppingList.getItems(i);
+            auto text = std::make_unique<sf::Text>();
+            text->setFont(font);
+            text->setString(prod.getName() + ": " + std::to_string(prod.getAmount()));
+            text->setCharacterSize(14);
+            text->setFillColor(fg);
+            text->setPosition(w.x * 0.12, yPos);
+            yPos += w.y * 0.05;
+
+            drawables.push_back(std::move(text));
+        }
+
+        for (const auto& drawable : drawables) {
+            window.draw(*drawable);
+        }
         window.display();
+        drawables.clear();
     }
-
-
-    /*
-    List list1("Casa");
-    List list2("Grigliata");
-
-    list1.addProd(Prod("Pane", 2));
-    Prod latte("Latte");
-    list1.addProd(latte);
-    list1.addProd(Prod("Uova", 6));
-
-    list2.addProd(Prod("Salsicce", 10));
-    list2.addProd(Prod("Hamburger", 5));
-    list2.addProd("Insalata",3);
-    list2.addProd(Prod("Carbonella"));
-
-    list1.setAmount("Uova", 10);
-    list1.setAmount(latte, 2);
-    list1.setAmount(latte, 1);
-    list1.removeProd(latte);
-
-    list1.printList();
-     */
-
     return 0;
 };
