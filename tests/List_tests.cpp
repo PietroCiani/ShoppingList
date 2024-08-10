@@ -22,6 +22,15 @@ protected:
     }
 };
 
+TEST_F(ListTest, SearchExistingProduct) {
+    EXPECT_EQ(list1.searchProd("Uova").getName(), "Uova");
+    EXPECT_EQ(list1.searchProd("Uova").getAmount(), 6);
+}
+
+TEST_F(ListTest, SearchNonExistingProduct) {
+    EXPECT_EQ(list1.searchProdIndex("Biscotti"), -1);
+}
+
 TEST_F(ListTest, AddProd) {
     list1.addProd("Pane", 3);
 
@@ -35,7 +44,7 @@ TEST_F(ListTest, RemoveProd) {
     EXPECT_EQ(list1.searchProdIndex("Latte"), -1);
 }
 
-TEST_F(ListTest, SetAmount) {
+TEST_F(ListTest, UpdateProdAmount) {
     list1.setAmount("Uova", 12);
 
     EXPECT_EQ(list1.searchProd("Uova").getAmount(), 12);
