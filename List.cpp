@@ -57,6 +57,10 @@ int List::searchProdIndex(const std::string &name) {
     return -1;
 }
 
+Prod &List::getItems(int index) {
+    return *Items[index];
+}
+
 void List::setAmount(Prod &prod, int newAmount) {
     Items[searchProdIndex(prod.getName())]->setAmount(newAmount, true);
 }
@@ -65,7 +69,11 @@ void List::setAmount(const std::string &name, int newAmount) {
     Items[searchProdIndex(name)]->setAmount(newAmount, true);
 }
 
-Prod &List::searchProd(const std::string &name) {
+Prod& List::searchProd(const std::string &name) {
     return *Items[searchProdIndex(name)];
+}
+
+std::string List::getName() {
+    return Name;
 }
 

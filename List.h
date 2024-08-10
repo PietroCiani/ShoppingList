@@ -25,14 +25,18 @@ public:
 
     void setAmount(const std::string &name, int newAmount);
 
+    std::string getName();
+
     Prod &searchProd(const std::string &name);
 
     int searchProdIndex(const std::string& name);
 
+    Prod & getItems(int index);
+
     void update(Prod &prod, int diff);
 
-    int getNumItems() const {
-        return NumItems;
+    int getItemsSize() const {
+        return Items.size();
     }
 
     void printList() const;
