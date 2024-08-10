@@ -1,12 +1,16 @@
 #include <SFML/Graphics.hpp>
 #include "Prod.h"
 #include "List.h"
+#include "Button.h"
 
 int main(){
     List shoppingList("Casa");
     shoppingList.addProd("Pane");
     shoppingList.addProd("Latte", 2);
     shoppingList.addProd("Uova", 6);
+
+    std::vector<std::unique_ptr<sf::Drawable>> drawables;
+    //std::vector<std::unique_ptr<Button>> buttons;
 
     sf::Vector2f w(300, 300);
     sf::RenderWindow window(sf::VideoMode(w.x,w.y), "Shopping List");
@@ -21,12 +25,29 @@ int main(){
 
     while (window.isOpen()) {
         sf::Event event;
-        std::vector<std::unique_ptr<sf::Drawable>> drawables;
         while (window.pollEvent(event)) {
             if (event.type == sf::Event::Closed)
                 window.close();
+
+            /*
+            if (event.type == sf::Event::MouseButtonPressed) {
+                if (event.mouseButton.button == sf::Mouse::Left) {
+                    sf::Vector2f mousePos(static_cast<float>(event.mouseButton.x), static_cast<float>(event.mouseButton.y));
+                    for (const auto& button : buttons) {
+                        if (button->isClicked(mousePos)) {
+                            //TODO: handle button click
+                        }
+                    }
+                }
+            }*/
+
         }
         window.clear(bg);
+
+        /*
+        Button addProdButton("Aggiungi Prodotto", {w.x * 0.5f, w.y * 0.5f});
+        buttons.push_back(std::make_unique<Button>(addProdButton));
+        */
 
         auto title = std::make_unique<sf::Text>();
         title->setFont(font);
@@ -53,6 +74,8 @@ int main(){
         for (const auto& drawable : drawables) {
             window.draw(*drawable);
         }
+        Button addProdButton("+", {w.x * 0.5f, w.y * 0.5f});
+        addProdButton.draw(window);
         window.display();
         drawables.clear();
     }
