@@ -17,7 +17,9 @@ public:
 
     void setSize(sf::Vector2f size);
 
-    bool isClicked(const sf::Vector2f& mousePos) const;
+    void checkClicked(const sf::Vector2f& mousePos);
+
+    void enable();
 
     void draw(sf::RenderWindow &window);
 

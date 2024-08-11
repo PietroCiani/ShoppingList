@@ -2,6 +2,7 @@
 // Created by delta on 10/08/24.
 //
 
+
 #include <iostream>
 #include "Button.h"
 
@@ -37,8 +38,11 @@ void Button::setSize(sf::Vector2f newSize) {
 
 }
 
-bool Button::isClicked(const sf::Vector2f &mousePos) const {
-    return buttonShape.getGlobalBounds().contains(mousePos);
+void Button::checkClicked(const sf::Vector2f &mousePos) {
+//    if (mousePos.x >= buttonShape.getPosition().x && mousePos.x <= buttonShape.getPosition().x + buttonShape.getSize().x &&
+//        mousePos.y >= buttonShape.getPosition().y && mousePos.y <= buttonShape.getPosition().y + buttonShape.getSize().y)
+//        enable();
+if (buttonShape.getGlobalBounds().contains(mousePos)) enable();
 }
 
 void Button::draw(sf::RenderWindow &window) {
@@ -46,3 +50,7 @@ void Button::draw(sf::RenderWindow &window) {
     window.draw(buttonText);
 }
 
+void Button::enable() {
+    std::cout << "Button '" << std::string(buttonText.getString()) << "' clicked" << std::endl;
+    //TODO: handle button click
+}

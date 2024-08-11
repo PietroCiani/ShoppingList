@@ -10,7 +10,7 @@ int main(){
     shoppingList.addProd("Uova", 6);
 
     std::vector<std::unique_ptr<sf::Drawable>> drawables;
-    //std::vector<std::unique_ptr<Button>> buttons;
+    std::vector<std::unique_ptr<Button>> buttons;
 
     sf::Vector2f w(300, 300);
     sf::RenderWindow window(sf::VideoMode(w.x,w.y), "Shopping List");
@@ -25,22 +25,16 @@ int main(){
 
     while (window.isOpen()) {
         sf::Event event;
+        Button addProdButton("+", {w.x * 0.5f, w.y * 0.5f});
+        buttons.push_back(std::make_unique<Button>(addProdButton));
         while (window.pollEvent(event)) {
-            if (event.type == sf::Event::Closed)
-                window.close();
-
-            /*
-            if (event.type == sf::Event::MouseButtonPressed) {
-                if (event.mouseButton.button == sf::Mouse::Left) {
-                    sf::Vector2f mousePos(static_cast<float>(event.mouseButton.x), static_cast<float>(event.mouseButton.y));
-                    for (const auto& button : buttons) {
-                        if (button->isClicked(mousePos)) {
-                            //TODO: handle button click
-                        }
-                    }
+            if (event.type == sf::Event::Closed) window.close();
+            if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left) {
+                sf::Vector2f mousePos = window.mapPixelToCoords(sf::Mouse::getPosition(window));
+                for (auto& button : buttons) {
+                    button->checkClicked(mousePos);
                 }
-            }*/
-
+            }
         }
         window.clear(bg);
 
@@ -74,10 +68,12 @@ int main(){
         for (const auto& drawable : drawables) {
             window.draw(*drawable);
         }
-        Button addProdButton("+", {w.x * 0.5f, w.y * 0.5f});
-        addProdButton.draw(window);
+        for (const auto& button : buttons) {
+            button->draw(window);
+        }
         window.display();
         drawables.clear();
+        buttons.clear();
     }
     return 0;
 };
