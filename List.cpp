@@ -57,7 +57,7 @@ int List::searchProdIndex(const std::string &name) {
     return -1;
 }
 
-Prod &List::getItems(int index) {
+Prod & List::getItems(int index) {
     return *Items[index];
 }
 
