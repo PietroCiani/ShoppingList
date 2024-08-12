@@ -8,10 +8,13 @@
 
 #include <SFML/Graphics.hpp>
 #include <string>
+#include <functional>
+
 
 class Button {
 public:
-    explicit Button(const std::string &text, sf::Vector2f pos, sf::Vector2f size = {40.f, 20.f});
+    explicit Button(const std::string &text, sf::Vector2f pos, std::function<void()> callback,
+                    sf::Vector2f size = {40.f, 20.f});
 
     void setPosition(sf::Vector2f pos);
 
@@ -19,7 +22,7 @@ public:
 
     void checkClicked(const sf::Vector2f& mousePos);
 
-    void enable();
+    void setCallback(std::function<void()> callback);
 
     void draw(sf::RenderWindow &window);
 
@@ -29,6 +32,7 @@ private:
     sf::Font font;
     sf::Vector2f pos;
     sf::Vector2f size;
+    std::function<void()> onClickCallback;
 };
 
 #endif //SHOPPINGLIST_BUTTON_H
