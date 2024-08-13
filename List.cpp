@@ -47,8 +47,12 @@ void List::removeProd(const Prod &prod) {
 }
 
 int List::searchProdIndex(const std::string &name) {
+    std::string lowerName = name;
+    std::transform(lowerName.begin(), lowerName.end(), lowerName.begin(), ::tolower);
     for (int i = 0; i < Items.size(); i++) {
-        if (Items[i]->getName() == name) {
+        std::string lowerItemName = Items[i]->getName();
+        std::transform(lowerItemName.begin(), lowerItemName.end(), lowerItemName.begin(), ::tolower);
+        if (lowerItemName == lowerName) {
             //std::cout << "'" << name << "' trovato!" << std::endl;
             return i;
         }
