@@ -7,21 +7,19 @@
 #include <utility>
 #include "Button.h"
 
-Button::Button(const std::string &text, sf::Vector2f pos, std::function<void()> callback, sf::Vector2f size) : onClickCallback(std::move(callback)){
+Button::Button(const std::string &text, sf::Vector2f pos, std::function<void()> callback, const sf::Font& font, sf::Vector2f size) : onClickCallback(std::move(callback)), font(font){
     sf::Color bg(80,73,69);
     sf::Color fg(251,241,199);
 
-    font.loadFromFile("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf");
     buttonText.setFont(font);
-    buttonText.setString(text);
     buttonText.setCharacterSize(14);
     buttonText.setFillColor(fg);
+    buttonText.setString(text);
 
     buttonShape.setPosition(pos);
     buttonShape.setSize(size);
     buttonShape.setFillColor(bg);
-    // FIXME: fix text position
-
+    // FIXME: fix text display
     sf::FloatRect textRect = buttonText.getLocalBounds();
     buttonText.setOrigin(textRect.left + textRect.width / 2.f, textRect.top + textRect.height / 2.f);
     buttonText.setPosition(

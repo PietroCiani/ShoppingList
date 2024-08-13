@@ -27,10 +27,10 @@ int main(){
     while (window.isOpen()) {
         sf::Event event;
         window.clear(bg);
-
-        Button test("+", {w.x * 0.5f, w.y * 0.5f},[&w](){std::cout << "window is " << w.x << " x " << w.y << std::endl;});
+        /*
+        Button test("+", {w.x * 0.5f, w.y * 0.5f},[&w](){std::cout << "window is " << w.x << " x " << w.y << std::endl;}, font);
         buttons.push_back(std::make_unique<Button>(test));
-
+        */
         auto title = std::make_unique<sf::Text>();
         title->setFont(font);
         title->setString("Lista '"+ shoppingList.getName() +"'");
@@ -50,12 +50,12 @@ int main(){
             text->setFillColor(fg);
             text->setPosition(w.x * 0.12, yPos);
 
-            Button increase("+", {w.x * 0.62f, yPos}, [&shoppingList, prod](){
+            Button increase("-", {w.x * 0.62f, yPos}, [&shoppingList, prod](){
                 shoppingList.setAmount(prod.getName(), prod.getAmount() - 1);
-            });
-            Button decrease("-", {w.x * 0.82f, yPos}, [&shoppingList, prod](){
+            }, font);
+            Button decrease("+", {w.x * 0.82f, yPos}, [&shoppingList, prod](){
                 shoppingList.setAmount(prod.getName(), prod.getAmount() + 1);
-            });
+            }, font);
 
             yPos += w.y * 0.1;
 

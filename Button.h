@@ -13,7 +13,7 @@
 
 class Button {
 public:
-    explicit Button(const std::string &text, sf::Vector2f pos, std::function<void()> callback,
+    explicit Button(const std::string &text, sf::Vector2f pos, std::function<void()> callback, const sf::Font& font,
                     sf::Vector2f size = {26.f, 26.f});
 
     void setPosition(sf::Vector2f pos);
@@ -33,6 +33,7 @@ private:
     sf::Vector2f pos;
     sf::Vector2f size;
     std::function<void()> onClickCallback;
+
 };
 
 #endif //SHOPPINGLIST_BUTTON_H
