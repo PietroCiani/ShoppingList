@@ -19,7 +19,6 @@ Button::Button(const std::string &text, sf::Vector2f pos, std::function<void()> 
     buttonShape.setPosition(pos);
     buttonShape.setSize(size);
     buttonShape.setFillColor(bg);
-    // FIXME: fix text display
     sf::FloatRect textRect = buttonText.getLocalBounds();
     buttonText.setOrigin(textRect.left + textRect.width / 2.f, textRect.top + textRect.height / 2.f);
     buttonText.setPosition(
