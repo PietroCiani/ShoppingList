@@ -7,27 +7,27 @@
 #include <utility>
 #include "Button.h"
 
-Button::Button(const std::string &text, sf::Vector2f pos, std::function<void()> callback, sf::Vector2f size) : onClickCallback(std::move(callback)) {
+Button::Button(const std::string &text, sf::Vector2f pos, std::function<void()> callback, sf::Vector2f size) : onClickCallback(std::move(callback)){
     sf::Color bg(80,73,69);
     sf::Color fg(251,241,199);
-
-    buttonShape.setSize(size);
-    buttonShape.setPosition(pos);
-    buttonShape.setFillColor(bg);
-    buttonShape.setOutlineColor(fg);
-    buttonShape.setOutlineThickness(2);
 
     font.loadFromFile("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf");
     buttonText.setFont(font);
     buttonText.setString(text);
     buttonText.setCharacterSize(14);
     buttonText.setFillColor(fg);
-    // FIXME: fix text position
-    sf::FloatRect textRect = buttonText.getLocalBounds();
-    buttonText.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
-    buttonText.setPosition(buttonShape.getPosition().x + (buttonShape.getSize().x / 2.0f), buttonShape.getPosition().y + (buttonShape.getSize().y / 2.0f));
 
-    //onClickCallback = [&text](){std::cout << "Button '" << text << "' clicked" << std::endl;};
+    buttonShape.setPosition(pos);
+    buttonShape.setSize(size);
+    buttonShape.setFillColor(bg);
+    // FIXME: fix text position
+
+    sf::FloatRect textRect = buttonText.getLocalBounds();
+    buttonText.setOrigin(textRect.left + textRect.width / 2.f, textRect.top + textRect.height / 2.f);
+    buttonText.setPosition(
+            buttonShape.getPosition().x + buttonShape.getSize().x / 2.f,
+            buttonShape.getPosition().y + buttonShape.getSize().y / 2.f
+    );
 }
 
 void Button::setPosition(sf::Vector2f newPos) {

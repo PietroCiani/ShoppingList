@@ -14,7 +14,7 @@
 class Button {
 public:
     explicit Button(const std::string &text, sf::Vector2f pos, std::function<void()> callback,
-                    sf::Vector2f size = {40.f, 20.f});
+                    sf::Vector2f size = {26.f, 26.f});
 
     void setPosition(sf::Vector2f pos);
 
