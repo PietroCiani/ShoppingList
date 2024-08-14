@@ -22,6 +22,8 @@ public:
 
     void checkClicked(const sf::Vector2f& mousePos);
 
+    void clicked();
+
     void setCallback(std::function<void()> callback);
 
     void draw(sf::RenderWindow &window);
