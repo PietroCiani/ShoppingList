@@ -5,4 +5,4 @@ You can create a shopping list, add items to it, remove items from it, and edit 
 
 - [x] basic shopping list functions
 - [x] GTest unit tests
-- [ ] Graphical interface
+- [x] Graphical interface

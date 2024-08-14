@@ -39,10 +39,7 @@ void Button::setSize(sf::Vector2f newSize) {
 }
 
 void Button::checkClicked(const sf::Vector2f &mousePos) {
-//    if (mousePos.x >= buttonShape.getPosition().x && mousePos.x <= buttonShape.getPosition().x + buttonShape.getSize().x &&
-//        mousePos.y >= buttonShape.getPosition().y && mousePos.y <= buttonShape.getPosition().y + buttonShape.getSize().y)
-//        enable();
-if (buttonShape.getGlobalBounds().contains(mousePos)) onClickCallback();;
+    if (buttonShape.getGlobalBounds().contains(mousePos)) onClickCallback();
 }
 
 void Button::draw(sf::RenderWindow &window) {
@@ -52,5 +49,9 @@ void Button::draw(sf::RenderWindow &window) {
 
 void Button::setCallback(std::function<void()> callback) {
     onClickCallback = std::move(callback);
+}
+
+void Button::clicked() {
+    onClickCallback();
 }
 

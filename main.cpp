@@ -14,6 +14,8 @@ std::string capitalizeFirstLetter(const std::string& str) {
     return capitalized;
 }
 
+// #TODO: merge this feature branch with main branch!!!
+
 int main(){
     List shoppingList("Casa");
     shoppingList.addProd("Uova", 6);
@@ -24,7 +26,7 @@ int main(){
     std::vector<std::unique_ptr<Text>> texts;
     std::vector<std::unique_ptr<Button>> buttons;
 
-    sf::Vector2f w(300, 300);
+    sf::Vector2f w(300, 400);
     sf::RenderWindow window(sf::VideoMode(w.x,w.y), "Shopping List");
     sf::View view = window.getView();
 
@@ -36,67 +38,28 @@ int main(){
         return -1;
     }
     std::string inputText;
-    float yPos = 0.85;
-    Text text(inputText, {w.x / 2.f, w.y * yPos});
-    /*
-    auto textField = std::make_unique<sf::Text>();
-    textField->setFont(font);
-    textField->setCharacterSize(14);
-    textField->setFillColor(fg);
-    sf::FloatRect textRect = textField->getLocalBounds();
-    textField->setOrigin(textRect.left + textRect.width / 2.f, textRect.top + textRect.height / 2.f);
-    textField->setPosition(w.x / 2.f, w.y *yPos);
-    */
-    /*
-    //FIXME: show button
-    Button addToList("Aggiungi", {w.x * 0.65f, w.y * yPos}, [&shoppingList, &inputText](){
-        if (!inputText.empty()){
-            int prodIndex = shoppingList.searchProdIndex(inputText);
-            std::cout << "Cerco " << shoppingList.getItems(prodIndex).getName() << " nella lista" << std::endl;
-            if (prodIndex == -1){
-                std::cout << shoppingList.getItems(prodIndex).getName() << " non c'è -> aggiungo" << std::endl;
-                shoppingList.addProd(inputText);
-                inputText.clear();
-            } else {
-                std::cout << shoppingList.getItems(prodIndex).getName() << " è gia nella lista (+1)" << std::endl;
-                shoppingList.getItems(prodIndex).setAmount(shoppingList.getItems(prodIndex).getAmount()+1, true);
-            }
-        }
-    }, font, {70,30});
-    buttons.push_back(std::make_unique<Button>(addToList));
-    */
+    float lastRow = 0.85;
+
     while (window.isOpen()) {
         sf::Event event{};
-        //FIXME: show textField
-        texts.push_back(std::make_unique<Text>(text));
         window.clear(bg);
         /*
         Button test("+", {w.x * 0.5f, w.y * 0.5f},[&w](){std::cout << "window is " << w.x << " x " << w.y << std::endl;}, font);
         buttons.push_back(std::make_unique<Button>(test));
         */
-        Text title("Lista '"+ shoppingList.getName() +"'", {w.x / 2.f, w.y *0.1f}, 24);
+        Text textField(inputText, {w.x * 0.5f, w.y*lastRow+15.f}, font);
+        Text title("Lista '"+ shoppingList.getName() +"'", {w.x * 0.5f, w.y *0.1f}, font, 24);
         texts.push_back(std::make_unique<Text>(title));
-        /*
-        auto title = std::make_unique<sf::Text>();
-        title->setFont(font);
-        title->setString("Lista '"+ shoppingList.getName() +"'");
-        title->setCharacterSize(24);
-        title->setFillColor(fg);
-        sf::FloatRect titleRect = title->getLocalBounds();
-        title->setOrigin(titleRect.left + titleRect.width / 2.f, titleRect.top + titleRect.height / 2.f);
-        title->setPosition(w.x / 2.f, w.y *0.1f);
-        texts.push_back(std::move(title));
-         */
 
         float yPos = w.y * 0.35f;
         // for each product in list create a text object and its buttons
         for (int i = 0; i < shoppingList.getItemsSize(); ++i) {
             Prod prod = shoppingList.getItems(i);
-            Text title(prod.getName() + ": " + std::to_string(prod.getAmount()), {w.x * 0.12f, yPos});
-            Button increase("-", {w.x * 0.62f, yPos}, [&shoppingList, prod](){
+            Text text(prod.getName() + ": " + std::to_string(prod.getAmount()), {w.x * 0.2f, yPos}, font);
+            Button increase("-", {w.x * 0.7f, yPos}, [&shoppingList, prod](){
                 shoppingList.setAmount(prod.getName(), prod.getAmount() - 1);
             }, font);
-            Button decrease("+", {w.x * 0.72f, yPos}, [&shoppingList, prod](){
+            Button decrease("+", {w.x * 0.8f, yPos}, [&shoppingList, prod](){
                 shoppingList.setAmount(prod.getName(), prod.getAmount() + 1);
             }, font);
 
@@ -106,6 +69,23 @@ int main(){
             buttons.push_back(std::make_unique<Button>(increase));
             buttons.push_back(std::make_unique<Button>(decrease));
         }
+
+        Button addToList("Aggiungi", {w.x * 0.75f - 20, w.y * lastRow}, [&shoppingList, &inputText](){
+            if (!inputText.empty()){
+                int prodIndex = shoppingList.searchProdIndex(inputText);
+                std::cout << "Cerco " << inputText << " nella lista" << std::endl;
+                if (prodIndex == -1) {
+                    std::cout << inputText << " non c'è -> aggiungo" << std::endl;
+                    shoppingList.addProd(capitalizeFirstLetter(inputText));
+                    inputText.clear();
+                } else {
+                    std::cout << shoppingList.getItems(prodIndex).getName() << " è gia nella lista (+1)" << std::endl;
+                    shoppingList.getItems(prodIndex).setAmount(shoppingList.getItems(prodIndex).getAmount()+1, true);
+                    inputText.clear();
+                }
+            }
+        }, font, {70,30});
+        buttons.push_back(std::make_unique<Button>(addToList));
 
         while (window.pollEvent(event)) {
             //FIXME: switch/case?
@@ -128,25 +108,15 @@ int main(){
                         inputText.pop_back();
                     }
                 } else if (event.text.unicode == '\r') {
-                    if (!inputText.empty()){
-                        int prodIndex = shoppingList.searchProdIndex(inputText);
-                        std::cout << "Cerco " << inputText << " nella lista" << std::endl;
-                        if (prodIndex == -1) {
-                            std::cout << inputText << " non c'è -> aggiungo" << std::endl;
-                            shoppingList.addProd(capitalizeFirstLetter(inputText));
-                            inputText.clear();
-                        } else {
-                            std::cout << shoppingList.getItems(prodIndex).getName() << " è gia nella lista (+1)" << std::endl;
-                            shoppingList.getItems(prodIndex).setAmount(shoppingList.getItems(prodIndex).getAmount()+1, true);
-                            inputText.clear();
-                        }
-                    }
+                    addToList.clicked();
                 } else {
                     inputText += static_cast<char>(event.text.unicode);
                 }
-                text.setString(inputText);
+                textField.setString(inputText);
             }
         }
+
+        texts.push_back(std::make_unique<Text>(textField));
 
         for (const auto& txt : texts) {
             txt->draw(window);

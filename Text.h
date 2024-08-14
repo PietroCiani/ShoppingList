@@ -10,7 +10,7 @@
 
 class Text : public sf::Transformable{
 public:
-    Text(std::string string, const sf::Vector2f &pos, const int size = 14, const sf::Color &col = sf::Color(251,241,199));
+    Text(std::string string, const sf::Vector2f &pos, const sf::Font& font, int size = 14, const sf::Color &col = sf::Color(251,241,199));
 
     void setString(const std::string &string);
 

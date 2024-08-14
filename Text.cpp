@@ -7,12 +7,13 @@
 #include <utility>
 #include <iostream>
 
-Text::Text(std::string string, const sf::Vector2f &pos, const int size, const sf::Color &col)
-        : string(std::move(string)), color(col), pos(pos), size(size) {
-    font.loadFromFile("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf");
+Text::Text(std::string str, const sf::Vector2f &pos, const sf::Font& font, const int size, const sf::Color &col)
+        : string(std::move(str)), color(col), pos(pos), size(size), font(font) {
+    sf::Color fg(251,241,199);
     text.setFont(font);
     text.setCharacterSize(size);
-    text.setFillColor(color);
+    text.setFillColor(fg);
+    text.setString(string);
     sf::FloatRect textRect = text.getLocalBounds();
     text.setOrigin(textRect.left + textRect.width / 2.f, textRect.top + textRect.height / 2.f);
     text.setPosition(pos);
