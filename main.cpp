@@ -41,7 +41,7 @@ int main(){
         return -1;
     if (!fontBold.loadFromFile("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf"))
         return -1;
-    
+
     std::string inputText;
     float scrollOffset = 0.f;
     float step = w.y * 0.1f;
