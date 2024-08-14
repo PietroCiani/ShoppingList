@@ -2,6 +2,7 @@
 #include "Prod.h"
 #include "List.h"
 #include "Button.h"
+#include "Text.h"
 
 std::string capitalizeFirstLetter(const std::string& str) {
     if (str.empty()) {
@@ -20,7 +21,7 @@ int main(){
     shoppingList.addProd("Pane");
 
     // vectors to be drawn
-    std::vector<std::unique_ptr<sf::Drawable>> drawables;
+    std::vector<std::unique_ptr<Text>> texts;
     std::vector<std::unique_ptr<Button>> buttons;
 
     sf::Vector2f w(300, 300);
@@ -34,9 +35,10 @@ int main(){
     if (!font.loadFromFile("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf")) {
         return -1;
     }
-
     std::string inputText;
     float yPos = 0.85;
+    Text text(inputText, {w.x / 2.f, w.y * yPos});
+    /*
     auto textField = std::make_unique<sf::Text>();
     textField->setFont(font);
     textField->setCharacterSize(14);
@@ -44,7 +46,9 @@ int main(){
     sf::FloatRect textRect = textField->getLocalBounds();
     textField->setOrigin(textRect.left + textRect.width / 2.f, textRect.top + textRect.height / 2.f);
     textField->setPosition(w.x / 2.f, w.y *yPos);
+    */
     /*
+    //FIXME: show button
     Button addToList("Aggiungi", {w.x * 0.65f, w.y * yPos}, [&shoppingList, &inputText](){
         if (!inputText.empty()){
             int prodIndex = shoppingList.searchProdIndex(inputText);
@@ -63,13 +67,16 @@ int main(){
     */
     while (window.isOpen()) {
         sf::Event event{};
-        //TODO: show textField
-        //drawables.push_back(std::move(textField));
+        //FIXME: show textField
+        texts.push_back(std::make_unique<Text>(text));
         window.clear(bg);
         /*
         Button test("+", {w.x * 0.5f, w.y * 0.5f},[&w](){std::cout << "window is " << w.x << " x " << w.y << std::endl;}, font);
         buttons.push_back(std::make_unique<Button>(test));
         */
+        Text title("Lista '"+ shoppingList.getName() +"'", {w.x / 2.f, w.y *0.1f}, 24);
+        texts.push_back(std::make_unique<Text>(title));
+        /*
         auto title = std::make_unique<sf::Text>();
         title->setFont(font);
         title->setString("Lista '"+ shoppingList.getName() +"'");
@@ -78,19 +85,14 @@ int main(){
         sf::FloatRect titleRect = title->getLocalBounds();
         title->setOrigin(titleRect.left + titleRect.width / 2.f, titleRect.top + titleRect.height / 2.f);
         title->setPosition(w.x / 2.f, w.y *0.1f);
-        drawables.push_back(std::move(title));
+        texts.push_back(std::move(title));
+         */
 
-        float yPos = w.y * 0.25f;
+        float yPos = w.y * 0.35f;
         // for each product in list create a text object and its buttons
         for (int i = 0; i < shoppingList.getItemsSize(); ++i) {
             Prod prod = shoppingList.getItems(i);
-            auto text = std::make_unique<sf::Text>();
-            text->setFont(font);
-            text->setString(prod.getName() + ": " + std::to_string(prod.getAmount()));
-            text->setCharacterSize(14);
-            text->setFillColor(fg);
-            text->setPosition(w.x * 0.12f, yPos);
-
+            Text title(prod.getName() + ": " + std::to_string(prod.getAmount()), {w.x * 0.12f, yPos});
             Button increase("-", {w.x * 0.62f, yPos}, [&shoppingList, prod](){
                 shoppingList.setAmount(prod.getName(), prod.getAmount() - 1);
             }, font);
@@ -100,7 +102,7 @@ int main(){
 
             yPos += w.y * 0.1f;
 
-            drawables.push_back(std::move(text));
+            texts.push_back(std::make_unique<Text>(text));
             buttons.push_back(std::make_unique<Button>(increase));
             buttons.push_back(std::make_unique<Button>(decrease));
         }
@@ -142,18 +144,18 @@ int main(){
                 } else {
                     inputText += static_cast<char>(event.text.unicode);
                 }
-                textField->setString(inputText);
+                text.setString(inputText);
             }
         }
 
-        for (const auto& drawable : drawables) {
-            window.draw(*drawable);
+        for (const auto& txt : texts) {
+            txt->draw(window);
         }
         for (const auto& button : buttons) {
             button->draw(window);
         }
         window.display();
-        drawables.clear();
+        texts.clear();
         buttons.clear();
     }
     return 0;

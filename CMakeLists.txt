@@ -16,7 +16,9 @@ add_executable(ShoppingList
         Prod.h
         main.cpp
         Button.cpp
-        Button.h)
+        Button.h
+        Text.cpp
+        Text.h)
 
 target_link_libraries(ShoppingList sfml-system sfml-window sfml-graphics sfml-audio)
 
