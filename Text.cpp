@@ -9,10 +9,9 @@
 
 Text::Text(std::string str, const sf::Vector2f &pos, const sf::Font& font, const int size, const sf::Color &col)
         : string(std::move(str)), color(col), pos(pos), size(size), font(font) {
-    sf::Color fg(251,241,199);
     text.setFont(font);
     text.setCharacterSize(size);
-    text.setFillColor(fg);
+    text.setFillColor(color);
     text.setString(string);
     sf::FloatRect textRect = text.getLocalBounds();
     text.setOrigin(textRect.left + textRect.width / 2.f, textRect.top + textRect.height / 2.f);

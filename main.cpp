@@ -29,33 +29,38 @@ int main(){
     sf::Vector2f w(300, 400);
     sf::RenderWindow window(sf::VideoMode(w.x,w.y), "Shopping List");
     sf::View view = window.getView();
+    view.setCenter(w.x / 2.f, w.y / 2.f);
 
     sf::Color bg(40,40,40);
     sf::Color fg(251,241,199);
+    sf::Color fgDarker(168,153,132);
 
     sf::Font font;
-    if (!font.loadFromFile("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf")) {
+    sf::Font fontBold;
+    if (!font.loadFromFile("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf"))
         return -1;
-    }
+    if (!fontBold.loadFromFile("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf"))
+        return -1;
+    
     std::string inputText;
-    float lastRow = 0.85;
+    float scrollOffset = 0.f;
+    float step = w.y * 0.1f;
+    float lastRow = 0.8;
 
     while (window.isOpen()) {
         sf::Event event{};
         window.clear(bg);
-        /*
-        Button test("+", {w.x * 0.5f, w.y * 0.5f},[&w](){std::cout << "window is " << w.x << " x " << w.y << std::endl;}, font);
-        buttons.push_back(std::make_unique<Button>(test));
-        */
-        Text textField(inputText, {w.x * 0.5f, w.y*lastRow+15.f}, font);
-        Text title("Lista '"+ shoppingList.getName() +"'", {w.x * 0.5f, w.y *0.1f}, font, 24);
+        Text title("Lista '" + shoppingList.getName() + "'", {w.x * 0.5f, w.y * 0.1f + scrollOffset}, fontBold, 24);
+        Text insert("Scrivi un prodotto e premi Invio", {w.x*0.5f, w.y * 0.23f + scrollOffset}, font, 14, fgDarker);
+        Text textField(inputText, {w.x * 0.5f, w.y * lastRow + 15.f + scrollOffset}, font);
+        float yPos = w.y * 0.35f + scrollOffset;
+
+        texts.push_back(std::make_unique<Text>(insert));
         texts.push_back(std::make_unique<Text>(title));
 
-        float yPos = w.y * 0.35f;
-        // for each product in list create a text object and its buttons
         for (int i = 0; i < shoppingList.getItemsSize(); ++i) {
             Prod prod = shoppingList.getItems(i);
-            Text text(prod.getName() + ": " + std::to_string(prod.getAmount()), {w.x * 0.2f, yPos}, font);
+            Text text(prod.getName() + ": " + std::to_string(prod.getAmount()), {w.x * 0.2f, yPos+15.f}, font);
             Button increase("-", {w.x * 0.7f, yPos}, [&shoppingList, prod](){
                 shoppingList.setAmount(prod.getName(), prod.getAmount() - 1);
             }, font);
@@ -63,7 +68,7 @@ int main(){
                 shoppingList.setAmount(prod.getName(), prod.getAmount() + 1);
             }, font);
 
-            yPos += w.y * 0.1f;
+            yPos += step;
 
             texts.push_back(std::make_unique<Text>(text));
             buttons.push_back(std::make_unique<Button>(increase));
@@ -113,6 +118,13 @@ int main(){
                     inputText += static_cast<char>(event.text.unicode);
                 }
                 textField.setString(inputText);
+            }
+            if (event.type == sf::Event::MouseWheelScrolled) {
+                float scrollStep = event.mouseWheelScroll.delta * step;
+                float newOffset = scrollOffset+scrollStep;
+                if (newOffset > -(w.y+(w.y*0.35)) && newOffset <= 0){
+                    scrollOffset = newOffset;
+                }
             }
         }
 
