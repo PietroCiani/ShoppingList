@@ -12,8 +12,9 @@
 
 class InputManager {
 public:
-    static void checkInput(sf::RenderWindow &window, sf::Event event, std::vector<std::shared_ptr<Button>> &buttons, sf::View &view,
-                    sf::Vector2f &w, Text &textField, std::string &inputText, Button &addToList, float &scrollOffset, float step);
+    static void checkInput(sf::RenderWindow &window, sf::Event event, const std::vector<std::unique_ptr<sf::Drawable>>& drawables,
+                           std::vector<int> &buttons, sf::View &view, sf::Vector2f &w, Text &textField,
+                           std::string &inputText, Button &addToList, float &scrollOffset, float step);
 };
 
 

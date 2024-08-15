@@ -46,7 +46,11 @@ sf::Vector2f Text::getPos() const {
     return pos;
 }
 
-void Text::draw(sf::RenderWindow &window) {
-    window.draw(text);
+void Text::draw(sf::RenderTarget &target, sf::RenderStates states) const {
+    target.draw(text, states);
 }
+
+//void Text::draw(sf::RenderWindow &window) {
+//    window.draw(text);
+//}
 

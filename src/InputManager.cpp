@@ -4,13 +4,19 @@
 
 #include "InputManager.h"
 
-void InputManager::checkInput(sf::RenderWindow &window, sf::Event event, std::vector<std::shared_ptr<Button>> &buttons, sf::View &view, sf::Vector2f &w, Text &textField, std::string &inputText, Button &addToList, float &scrollOffset, float step) {
+void InputManager::checkInput(sf::RenderWindow &window, sf::Event event, const std::vector<std::unique_ptr<sf::Drawable>>& drawables,
+                              std::vector<int> &buttons, sf::View &view, sf::Vector2f &w, Text &textField,
+                              std::string &inputText, Button &addToList, float &scrollOffset, float step) {
     //FIXME: switch/case?
     if (event.type == sf::Event::Closed) window.close();
     if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left) {
         sf::Vector2f mousePos = window.mapPixelToCoords(sf::Mouse::getPosition(window));
-        for (auto& button : buttons) {
-            button->checkClicked(mousePos);
+        for (auto& drawable : drawables) {
+            Button* button = dynamic_cast<Button*>(drawable.get());
+            if (button) {
+                // if cast succeeded -> checkClicked()
+                button->checkClicked(mousePos);
+            }
         }
     }
     if (event.type == sf::Event::Resized) {

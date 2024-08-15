@@ -8,7 +8,7 @@
 
 #include <SFML/Graphics.hpp>
 
-class Text : public sf::Transformable{
+class Text : public sf::Drawable, public sf::Transformable{
 public:
     Text(std::string string, const sf::Vector2f &pos, const sf::Font& font, int size = 14, const sf::Color &col = sf::Color(251,241,199));
 
@@ -22,7 +22,7 @@ public:
 
     sf::Vector2f getPos() const;
 
-    void draw(sf::RenderWindow &window);
+    virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
 
 private:
     sf::Font font;

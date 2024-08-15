@@ -15,15 +15,24 @@ std::string capitalizeFirstLetter(const std::string& str) {
     return capitalized;
 }
 
+std::vector<int> findButtonIndices(const std::vector<std::unique_ptr<sf::Drawable>>& drawables) {
+    std::vector<int> buttonIndices;
+    for (int i = 0; i < drawables.size(); ++i) {
+        if (dynamic_cast<Button*>(drawables[i].get())) {
+            buttonIndices.push_back(i);
+        }
+    }
+    return buttonIndices;
+}
+
+
 int main(){
     List shoppingList("Casa");
     shoppingList.addProd("Uova", 6);
     shoppingList.addProd("Latte", 2);
     shoppingList.addProd("Pane");
 
-    // vectors to be drawn
-    std::vector<std::unique_ptr<Text>> texts;
-    std::vector<std::shared_ptr<Button>> buttons;
+    std::vector<std::unique_ptr<sf::Drawable>> drawables;
 
     sf::Vector2f w(300, 400);
     sf::RenderWindow window(sf::VideoMode(w.x,w.y), "Shopping List");
@@ -31,6 +40,8 @@ int main(){
     view.setCenter(w.x / 2.f, w.y / 2.f);
 
     sf::Color bg(40,40,40);
+    sf::Color bgLighter(80,73,69);
+    sf::Color bgDarker(29,32,33);
     sf::Color fg(251,241,199);
     sf::Color fgDarker(168,153,132);
 
@@ -51,11 +62,11 @@ int main(){
         window.clear(bg);
         Text title("Lista '" + shoppingList.getName() + "'", {w.x * 0.5f, w.y * 0.1f + scrollOffset}, fontBold, 24);
         Text insert("Scrivi un prodotto e premi Invio", {w.x*0.5f, w.y * 0.23f + scrollOffset}, font, 14, fgDarker);
-        Text textField(inputText, {w.x * 0.5f, w.y * lastRow + 15.f + scrollOffset}, font);
+        Text textField(inputText, {w.x * 0.5f, w.y * lastRow + 15.f}, font);
         float yPos = w.y * 0.35f + scrollOffset;
 
-        texts.push_back(std::make_unique<Text>(insert));
-        texts.push_back(std::make_unique<Text>(title));
+        drawables.push_back(std::make_unique<Text>(insert));
+        drawables.push_back(std::make_unique<Text>(title));
 
         for (int i = 0; i < shoppingList.getItemsSize(); ++i) {
             Prod prod = shoppingList.getItems(i);
@@ -68,11 +79,17 @@ int main(){
             }, font);
 
             yPos += step;
+            //std::cout << "scrollOffset: " << scrollOffset << std::endl;
 
-            texts.push_back(std::make_unique<Text>(text));
-            buttons.push_back(std::make_unique<Button>(increase));
-            buttons.push_back(std::make_unique<Button>(decrease));
+            drawables.push_back(std::make_unique<Text>(text));
+            drawables.push_back(std::make_unique<Button>(increase));
+            drawables.push_back(std::make_unique<Button>(decrease));
         }
+        //FIXME: this rect has to be drawn after the main prod list loop but before the addToList button
+        //TODO: make Button and Text classes inherit from a common class (sf::Drawable ???)
+//        sf::RectangleShape bottomRect({w.x, 50.f});
+//        bottomRect.setPosition({0, w.y*lastRow - 10.f});
+//        bottomRect.setFillColor(bg);
 
         Button addToList("Aggiungi", {w.x * 0.75f - 20, w.y * lastRow}, [&shoppingList, &inputText](){
             if (!inputText.empty()){
@@ -89,23 +106,19 @@ int main(){
                 }
             }
         }, font, {70,30});
-        buttons.push_back(std::make_unique<Button>(addToList));
+        drawables.push_back(std::make_unique<Button>(addToList));
 
+        auto buttons = findButtonIndices(drawables);
         while (window.pollEvent(event)){
-            InputManager::checkInput(window, event, buttons, view, w, textField, inputText, addToList, scrollOffset, step);
+            InputManager::checkInput(window, event, drawables, buttons, view, w, textField, inputText, addToList, scrollOffset, step);
         }
+        drawables.push_back(std::make_unique<Text>(textField));
 
-        texts.push_back(std::make_unique<Text>(textField));
-
-        for (const auto& txt : texts) {
-            txt->draw(window);
-        }
-        for (const auto& button : buttons) {
-            button->draw(window);
+        for (const auto& drawable : drawables) {
+            window.draw(*drawable);
         }
         window.display();
-        texts.clear();
-        buttons.clear();
+        drawables.clear();
     }
     return 0;
 }

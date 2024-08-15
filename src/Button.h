@@ -11,7 +11,7 @@
 #include <functional>
 
 
-class Button {
+class Button : public sf::Drawable {
 public:
     explicit Button(const std::string &text, sf::Vector2f pos, std::function<void()> callback, const sf::Font& font,
                     sf::Vector2f size = {26.f, 26.f});
@@ -26,7 +26,7 @@ public:
 
     void setCallback(std::function<void()> callback);
 
-    void draw(sf::RenderWindow &window);
+    virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
 
 private:
     sf::RectangleShape buttonShape;
