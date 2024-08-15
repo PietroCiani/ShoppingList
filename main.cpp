@@ -3,6 +3,7 @@
 #include "src/List.h"
 #include "src/Button.h"
 #include "src/Text.h"
+#include "src/InputManager.h"
 
 std::string capitalizeFirstLetter(const std::string& str) {
     if (str.empty()) {
@@ -14,8 +15,6 @@ std::string capitalizeFirstLetter(const std::string& str) {
     return capitalized;
 }
 
-// #TODO: merge this feature branch with main branch!!!
-
 int main(){
     List shoppingList("Casa");
     shoppingList.addProd("Uova", 6);
@@ -24,7 +23,7 @@ int main(){
 
     // vectors to be drawn
     std::vector<std::unique_ptr<Text>> texts;
-    std::vector<std::unique_ptr<Button>> buttons;
+    std::vector<std::shared_ptr<Button>> buttons;
 
     sf::Vector2f w(300, 400);
     sf::RenderWindow window(sf::VideoMode(w.x,w.y), "Shopping List");
@@ -92,40 +91,8 @@ int main(){
         }, font, {70,30});
         buttons.push_back(std::make_unique<Button>(addToList));
 
-        while (window.pollEvent(event)) {
-            //FIXME: switch/case?
-            if (event.type == sf::Event::Closed) window.close();
-            if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left) {
-                sf::Vector2f mousePos = window.mapPixelToCoords(sf::Mouse::getPosition(window));
-                for (auto& button : buttons) {
-                    button->checkClicked(mousePos);
-                }
-            }
-            if (event.type == sf::Event::Resized) {
-                view.setSize(float(event.size.width), float(event.size.height));
-                view.setCenter(float(event.size.width) / 2.f, float(event.size.height) / 2.f);
-                window.setView(view);
-                w = {static_cast<float>(event.size.width), static_cast<float>(event.size.height)};
-            }
-            if (event.type == sf::Event::TextEntered) {
-                if (event.text.unicode == '\b') {
-                    if (!inputText.empty()) {
-                        inputText.pop_back();
-                    }
-                } else if (event.text.unicode == '\r') {
-                    addToList.clicked();
-                } else {
-                    inputText += static_cast<char>(event.text.unicode);
-                }
-                textField.setString(inputText);
-            }
-            if (event.type == sf::Event::MouseWheelScrolled) {
-                float scrollStep = event.mouseWheelScroll.delta * step;
-                float newOffset = scrollOffset+scrollStep;
-                if (newOffset > -(w.y+(w.y*0.35)) && newOffset <= 0){
-                    scrollOffset = newOffset;
-                }
-            }
+        while (window.pollEvent(event)){
+            InputManager::checkInput(window, event, buttons, view, w, textField, inputText, addToList, scrollOffset, step);
         }
 
         texts.push_back(std::make_unique<Text>(textField));

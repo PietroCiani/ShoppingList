@@ -18,7 +18,9 @@ add_executable(ShoppingList
         src/Button.cpp
         src/Button.h
         src/Text.cpp
-        src/Text.h)
+        src/Text.h
+        src/InputManager.cpp
+        src/InputManager.h)
 
 target_link_libraries(ShoppingList sfml-system sfml-window sfml-graphics sfml-audio)
 
