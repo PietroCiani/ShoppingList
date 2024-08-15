@@ -4,7 +4,7 @@
 
 #include <gtest/gtest.h>
 
-#include "List.h"
+#include "src/List.h"
 
 TEST(ProdTest, DefaultConstructor) {
 Prod prod("Pane");

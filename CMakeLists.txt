@@ -10,15 +10,15 @@ add_subdirectory(tests)
 
 
 add_executable(ShoppingList
-        List.cpp
-        List.h
-        Prod.cpp
-        Prod.h
+        src/List.cpp
+        src/List.h
+        src/Prod.cpp
+        src/Prod.h
         main.cpp
-        Button.cpp
-        Button.h
-        Text.cpp
-        Text.h)
+        src/Button.cpp
+        src/Button.h
+        src/Text.cpp
+        src/Text.h)
 
 target_link_libraries(ShoppingList sfml-system sfml-window sfml-graphics sfml-audio)
 

@@ -1,8 +1,8 @@
 #include <SFML/Graphics.hpp>
-#include "Prod.h"
-#include "List.h"
-#include "Button.h"
-#include "Text.h"
+#include "src/Prod.h"
+#include "src/List.h"
+#include "src/Button.h"
+#include "src/Text.h"
 
 std::string capitalizeFirstLetter(const std::string& str) {
     if (str.empty()) {

@@ -10,8 +10,8 @@ You can create a shopping list, add items to it, remove items from it, and edit 
 - [x] Graphical interface
 
 <p float="left">
-  <img src="/img.png" width="250" />
-  <img src="/img_1.png" width="250" /> 
-  <img src="/img_2.png" width="250" />
+  <img src="/img/img.png" width="250" />
+  <img src="/img/img_1.png" width="250" /> 
+  <img src="/img/img_2.png" width="250" />
 </p>
 

@@ -7,8 +7,8 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(googletest)
 
 add_executable(ShoppingList_tests
-        ../List.cpp
-        ../Prod.cpp
+        ../src/List.cpp
+        ../src/Prod.cpp
         List_tests.cpp
         Prod_tests.cpp
 )
