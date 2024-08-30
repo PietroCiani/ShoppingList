@@ -86,10 +86,10 @@ int main(){
             drawables.push_back(std::make_unique<Button>(decrease));
         }
         //FIXME: this rect has to be drawn after the main prod list loop but before the addToList button
-        //TODO: make Button and Text classes inherit from a common class (sf::Drawable ???)
-//        sf::RectangleShape bottomRect({w.x, 50.f});
-//        bottomRect.setPosition({0, w.y*lastRow - 10.f});
-//        bottomRect.setFillColor(bg);
+        sf::RectangleShape bottomRect({w.x, 100.f});
+        bottomRect.setPosition({0, w.y*lastRow - 10.f});
+        bottomRect.setFillColor(bg);
+        drawables.push_back(std::make_unique<sf::RectangleShape>(bottomRect));
 
         Button addToList("Aggiungi", {w.x * 0.75f - 20, w.y * lastRow}, [&shoppingList, &inputText](){
             if (!inputText.empty()){
