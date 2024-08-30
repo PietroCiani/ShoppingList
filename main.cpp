@@ -85,7 +85,6 @@ int main(){
             drawables.push_back(std::make_unique<Button>(increase));
             drawables.push_back(std::make_unique<Button>(decrease));
         }
-        //FIXME: this rect has to be drawn after the main prod list loop but before the addToList button
         sf::RectangleShape bottomRect({w.x, 100.f});
         bottomRect.setPosition({0, w.y*lastRow - 10.f});
         bottomRect.setFillColor(bg);
