@@ -1,0 +1,1 @@
+/usr/bin/c++ -g CMakeFiles/ShoppingList_tests.dir/__/src/List.cpp.o CMakeFiles/ShoppingList_tests.dir/__/src/Prod.cpp.o CMakeFiles/ShoppingList_tests.dir/List_tests.cpp.o CMakeFiles/ShoppingList_tests.dir/Prod_tests.cpp.o -o ShoppingList_tests  ../lib/libgtest.a ../lib/libgtest_main.a ../lib/libgtest.a
