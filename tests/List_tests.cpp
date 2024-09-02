@@ -29,6 +29,7 @@ TEST_F(ListTest, SearchExistingProduct) {
 
 TEST_F(ListTest, SearchNonExistingProduct) {
     EXPECT_EQ(list1.searchProdIndex("Biscotti"), -1);
+    EXPECT_EQ(list1.searchProdIndex("sfdfsdfsd"), -1); //FIXME handle -1
 }
 
 TEST_F(ListTest, AddProd) {
@@ -44,9 +45,23 @@ TEST_F(ListTest, RemoveProd) {
     EXPECT_EQ(list1.searchProdIndex("Latte"), -1);
 }
 
+TEST_F(ListTest, RemoveNonExistingProd) {
+    int oldSize = list1.getItemsSize();
+    list1.removeProd(Prod("Burro"));
+
+    EXPECT_EQ(list1.searchProdIndex("Burro"), -1);
+    EXPECT_EQ(list1.getItemsSize(), oldSize);
+}
+
 TEST_F(ListTest, UpdateProdAmount) {
     list1.setAmount("Uova", 12);
 
     EXPECT_EQ(list1.searchProd("Uova").getAmount(), 12);
+}
+
+TEST_F(ListTest, UpdateNonExistingProdAmount) {
+    list1.setAmount("fsfdfsd", 12);
+
+    EXPECT_EQ(list1.searchProd("dfsdfsdf").getAmount(), 12);
 }
 

@@ -14,7 +14,6 @@ void InputManager::checkInput(sf::RenderWindow &window, sf::Event event, const s
         for (auto& drawable : drawables) {
             Button* button = dynamic_cast<Button*>(drawable.get());
             if (button) {
-                // if cast succeeded -> checkClicked()
                 button->checkClicked(mousePos);
             }
         }

@@ -109,7 +109,8 @@ int main(){
 
         auto buttons = findButtonIndices(drawables);
         while (window.pollEvent(event)){
-            InputManager::checkInput(window, event, drawables, buttons, view, w, textField, inputText, addToList, scrollOffset, step);
+            InputManager::checkInput(window, event, drawables, buttons, view, w, textField, inputText, addToList,
+                                     scrollOffset, step);
         }
         drawables.push_back(std::make_unique<Text>(textField));
 

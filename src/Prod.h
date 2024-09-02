@@ -40,7 +40,8 @@ public:
 private:
     std::string name;
     unsigned short int amount;
-    List* list;
+    List* list; //FIXME smart pointer
+
 };
 
 #endif //SHOPPINGLIST_PROD_H

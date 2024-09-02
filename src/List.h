@@ -27,9 +27,9 @@ public:
 
     std::string getName();
 
-    Prod &searchProd(const std::string &name);
+    Prod &searchProd(const std::string &name); //FIXME return array of prod
 
-    int searchProdIndex(const std::string& name);
+    int searchProdIndex(const std::string& name); //FIXME handle empty no results (empty array in searchProd)
 
     Prod & getItems(int index);
 

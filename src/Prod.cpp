@@ -13,8 +13,4 @@ void Prod::setAmount(int newAmount, bool updateList = true) {
     if (list && updateList) {
         list->update(*this, diff);
     }
-    if (amount == 0) {
-        //list.removeProd(this);
-        //delete this;
-    }
 }
