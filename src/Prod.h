@@ -16,32 +16,24 @@ class List;
 
 class Prod {
 public:
-    explicit Prod(const std::string &name, int amount = 1, List *lst = nullptr)
-            : name(name), amount(amount), list(lst) {}
+    explicit Prod(const std::string &name) : name(name), number(1), count(false) {}
 
-    void setAmount(int newAmount, bool updateList);
+    Prod(const std::string &name, unsigned short int number) : name(name), number(number), count(true) {}
 
-    unsigned short int getAmount() const {
-        return amount;
-    }
+    void setNumber(int newNumber);
 
-    std::string getName() const {
-        return name;
-    }
+    unsigned short int getNumber() const;
 
-    void setList(List *lst) {
-        list = lst; //FIXME: try to use smart ptr (shared?)
-    }
+    std::string getName() const;
 
-    bool operator==(const Prod &other) const {
-        return name == other.name;
-    }
+    bool isCount() const;
+
+    bool operator==(const Prod &other) const;
 
 private:
     std::string name;
-    unsigned short int amount;
-    List* list; //FIXME smart pointer
-
+    bool count;
+    unsigned short int number;
 };
 
 #endif //SHOPPINGLIST_PROD_H

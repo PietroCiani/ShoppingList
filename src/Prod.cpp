@@ -6,11 +6,24 @@
 #include "List.h"
 
 
-void Prod::setAmount(int newAmount, bool updateList = true) {
-    std::cout << "Cambio quantità di '" << name << "':" << amount << " -> " << newAmount << std::endl << std::endl;
-    int diff = newAmount - amount;
-    amount = newAmount;
-    if (list && updateList) {
-        list->update(*this, diff);
-    }
+void Prod::setNumber(int newNumber) {
+    std::cout << "Cambio quantità di '" << name << "':" << number << " -> " << newNumber << std::endl << std::endl;
+    int diff = newNumber - number;
+    number = newNumber;
+}
+
+unsigned short int Prod::getNumber() const {
+    return number;
+}
+
+std::string Prod::getName() const {
+    return name;
+}
+
+bool Prod::isCount() const {
+    return count;
+}
+
+bool Prod::operator==(const Prod &other) const {
+    return name == other.name;
 }
