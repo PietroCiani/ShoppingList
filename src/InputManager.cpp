@@ -29,7 +29,7 @@ void InputManager::checkInput(sf::RenderWindow &window, sf::Event event, const s
             if (!inputText.empty()) {
                 inputText.pop_back();
             }
-        } else if (event.text.unicode == '\r') {
+        } else if (event.text.unicode == '\r' || event.text.unicode == '\n') {
             addToList.clicked();
         } else {
             inputText += static_cast<char>(event.text.unicode);
