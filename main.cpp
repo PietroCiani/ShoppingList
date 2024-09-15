@@ -47,9 +47,9 @@ int main(){
 
     sf::Font font;
     sf::Font fontBold;
-    if (!font.loadFromFile("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf"))
+    if (!font.loadFromFile("/Volumes/Macintosh HD/System/Library/Fonts/Supplemental/Arial Unicode.ttf"))
         return -1;
-    if (!fontBold.loadFromFile("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf"))
+    if (!fontBold.loadFromFile("/Volumes/Macintosh HD/System/Library/Fonts/Supplemental/Arial Bold.ttf"))
         return -1;
 
     std::string inputText;
@@ -63,45 +63,78 @@ int main(){
         Text title("Lista '" + shoppingList.getName() + "'", {w.x * 0.5f, w.y * 0.1f + scrollOffset}, fontBold, 24);
         Text insert("Scrivi un prodotto e premi Invio", {w.x*0.5f, w.y * 0.23f + scrollOffset}, font, 14, fgDarker);
         Text textField(inputText, {w.x * 0.5f, w.y * lastRow + 15.f}, font);
+        bool searching = !inputText.empty();
+        std::vector<int> found = shoppingList.searchProdIndex(inputText);
         float yPos = w.y * 0.35f + scrollOffset;
 
         drawables.push_back(std::make_unique<Text>(insert));
         drawables.push_back(std::make_unique<Text>(title));
 
-        for (int i = 0; i < shoppingList.getItemsSize(); ++i) {
-            Prod prod = shoppingList.getItems(i);
-            Text text(prod.getName() + ": " + std::to_string(prod.getAmount()), {w.x * 0.2f, yPos+15.f}, font);
-            Button increase("-", {w.x * 0.7f, yPos}, [&shoppingList, prod](){
-                shoppingList.setAmount(prod.getName(), prod.getAmount() - 1);
-            }, font);
-            Button decrease("+", {w.x * 0.8f, yPos}, [&shoppingList, prod](){
-                shoppingList.setAmount(prod.getName(), prod.getAmount() + 1);
-            }, font);
+        if(!searching) {
+            // Print full list
+            for (int i = 0; i < shoppingList.getItemsSize(); ++i) {
+                Prod& prod = shoppingList.getItems(i);
+                Text text(prod.getName() + ": " + std::to_string(prod.getNumber()), {w.x * 0.2f, yPos+15.f}, font);
+                if (prod.isCount()){
+                    Button decrease("-", {w.x * 0.7f, yPos}, [&shoppingList, prod, i](){
+                        shoppingList.setNumber(i, prod.getNumber() - 1);
+                    }, font);
+                    Button increase("+", {w.x * 0.8f, yPos}, [&shoppingList, prod, i](){
+                        shoppingList.setNumber(i, prod.getNumber() + 1);
+                    }, font);
+                    drawables.push_back(std::make_unique<Button>(decrease));
+                    drawables.push_back(std::make_unique<Button>(increase));
+                }
+                Button remove("x", {w.x * 0.9f, yPos}, [&shoppingList, i](){
+                        shoppingList.removeProd(i);
+                    }, font);
 
-            yPos += step;
-            //std::cout << "scrollOffset: " << scrollOffset << std::endl;
+                yPos += step;
 
-            drawables.push_back(std::make_unique<Text>(text));
-            drawables.push_back(std::make_unique<Button>(increase));
-            drawables.push_back(std::make_unique<Button>(decrease));
+                drawables.push_back(std::make_unique<Text>(text));
+                drawables.push_back(std::make_unique<Button>(remove));
+            }
+        } else {
+            for (int i = 0; i < found.size(); ++i) {
+                Prod& prod = shoppingList.getItems(found[i]);
+                Text text(prod.getName() + ": " + std::to_string(prod.getNumber()), {w.x * 0.2f, yPos+15.f}, font);
+                if (prod.isCount()){
+                    Button decrease("-", {w.x * 0.7f, yPos}, [&shoppingList, prod, i](){
+                        shoppingList.setNumber(i, prod.getNumber() - 1);
+                    }, font);
+                    Button increase("+", {w.x * 0.8f, yPos}, [&shoppingList, prod, i](){
+                        shoppingList.setNumber(i, prod.getNumber() + 1);
+                    }, font);
+                    drawables.push_back(std::make_unique<Button>(decrease));
+                    drawables.push_back(std::make_unique<Button>(increase));
+                }
+                Button remove("x", {w.x * 0.9f, yPos}, [&shoppingList, found, i](){
+                    shoppingList.removeProd(found[i]);
+                }, font);
+
+                yPos += step;
+                drawables.push_back(std::make_unique<Text>(text));
+                drawables.push_back(std::make_unique<Button>(remove));
+            }
         }
+
         sf::RectangleShape bottomRect({w.x, 100.f});
         bottomRect.setPosition({0, w.y*lastRow - 10.f});
         bottomRect.setFillColor(bg);
         drawables.push_back(std::make_unique<sf::RectangleShape>(bottomRect));
 
-        Button addToList("Aggiungi", {w.x * 0.75f - 20, w.y * lastRow}, [&shoppingList, &inputText](){
-            if (!inputText.empty()){
-                int prodIndex = shoppingList.searchProdIndex(inputText);
-                std::cout << "Cerco " << inputText << " nella lista" << std::endl;
-                if (prodIndex == -1) {
+        Button addToList("Aggiungi", {w.x * 0.75f - 20, w.y * lastRow}, [&shoppingList, &inputText, searching, found](){
+            if (searching){
+                if (found.empty()) {
                     std::cout << inputText << " non c'è -> aggiungo" << std::endl;
                     shoppingList.addProd(capitalizeFirstLetter(inputText));
                     inputText.clear();
-                } else {
-                    std::cout << shoppingList.getItems(prodIndex).getName() << " è gia nella lista (+1)" << std::endl;
-                    shoppingList.getItems(prodIndex).setAmount(shoppingList.getItems(prodIndex).getAmount()+1, true);
+                } else if (found.size() == 1) {
+                    std::cout << shoppingList.getItems(found[0]).getName() << " è gia nella lista (+1)" << std::endl;
+                    shoppingList.getItems(found[0]).setNumber(shoppingList.getItems(found[0]).getNumber()+1);
                     inputText.clear();
+                } else {
+                    std::cout << "Trovati " << found.size() << " prodotti simili:" << std::endl;
                 }
             }
         }, font, {70,30});
