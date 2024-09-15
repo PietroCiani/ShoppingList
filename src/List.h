@@ -21,19 +21,15 @@ public:
 
     void addProd(const std::string &name, const int &amount = 1);
 
-    void setAmount(Prod &prod, int newAmount);
-
-    void setAmount(const std::string &name, int newAmount);
+    void setNumber(int i, int newAmount);
 
     std::string getName();
 
-    Prod &searchProd(const std::string &name); //FIXME return array of prod
-
-    int searchProdIndex(const std::string& name); //FIXME handle empty no results (empty array in searchProd)
+    std::vector<int> searchProdIndex(const std::string &name);
 
     Prod & getItems(int index);
 
-    void update(Prod &prod, int diff);
+    void update(int i, int diff);
 
     int getItemsSize() const {
         return Items.size();
@@ -41,7 +37,7 @@ public:
 
     void printList() const;
 
-    void removeProd(const Prod &prod);
+    void removeProd(int i);
 
 private:
     std::string Name;

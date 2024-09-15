@@ -9,7 +9,7 @@
 void List::printList() const {
     std::cout << "Lista '"<< Name << "'" << std::endl;
     for (const auto & Item : Items){
-        std::cout << Item->getName() << ": " << Item->getAmount() << std::endl;
+        std::cout << Item->getName() << ": " << Item->getNumber() << std::endl;
     }
     std::cout << "Totale oggetti: " << NumItems << std::endl;
     std::cout << "--------------------" << std::endl;
@@ -17,8 +17,7 @@ void List::printList() const {
 
 void List::addProd(const Prod& prod) {
     Items.push_back(std::make_unique<Prod>(prod));
-    Items.back()->setList(this);
-    NumItems += prod.getAmount();
+    NumItems += prod.getNumber();
 }
 
 void List::addProd(const std::string &name, const int &amount) {
@@ -26,55 +25,38 @@ void List::addProd(const std::string &name, const int &amount) {
     addProd(prod);
 }
 
-void List::update(Prod &prod, int diff) {
-    if (prod.getAmount() == 0) {
-        removeProd(prod);
-    }
-    else {
-        int index = searchProdIndex(prod.getName());
-        if (index != -1) {
-            NumItems += diff;
-        }
+void List::update(int i, int diff) {
+    if (Items[i]->getNumber() == 0) {
+        removeProd(i);
+    } else {
+        NumItems += diff;
     }
 }
 
-void List::removeProd(const Prod &prod) {
-    std::cout << "Rimuovo " << prod.getAmount() << " '" << prod.getName() << "' dalla lista" << std::endl << std::endl;
-    NumItems -= prod.getAmount();
-    Items.erase(std::remove_if(Items.begin(), Items.end(), [&prod](const std::unique_ptr<Prod> &item) {
-        return *item == prod;
-    }), Items.end());
+void List::removeProd(int i) {
+    std::cout << "Rimuovo " << Items[i]->getNumber() << " '" << Items[i]->getName() << "' dalla lista" << std::endl << std::endl;
+    NumItems -= Items[i]->getNumber();
+    Items.erase(Items.begin() + i);
 }
 
-int List::searchProdIndex(const std::string &name) {
-    std::string lowerName = name;
-    std::transform(lowerName.begin(), lowerName.end(), lowerName.begin(), ::tolower);
-    for (int i = 0; i < Items.size(); i++) {
-        std::string lowerItemName = Items[i]->getName();
-        std::transform(lowerItemName.begin(), lowerItemName.end(), lowerItemName.begin(), ::tolower);
-        if (lowerItemName == lowerName) {
-            //std::cout << "'" << name << "' trovato!" << std::endl;
-            return i;
+std::vector<int> List::searchProdIndex(const std::string &name) {
+    std::vector<int> results{};
+    for (int i = 0; i < Items.size(); ++i) {
+        if (Items[i]->getName().rfind(name, 0) == 0) { // rfind(name, 0) == 0 controlla se inizia con "name"
+            results.push_back(i);
         }
     }
-    std::cout << "Prodotto '" << name << "' non trovato" << std::endl;
-    return -1;
+    return results;
 }
 
 Prod & List::getItems(int index) {
     return *Items[index];
 }
 
-void List::setAmount(Prod &prod, int newAmount) {
-    Items[searchProdIndex(prod.getName())]->setAmount(newAmount, true);
-}
-
-void List::setAmount(const std::string &name, int newAmount) {
-    Items[searchProdIndex(name)]->setAmount(newAmount, true);
-}
-
-Prod& List::searchProd(const std::string &name) {
-    return *Items[searchProdIndex(name)];
+void List::setNumber(int i, int newNumber) {
+    int diff = newNumber - Items[i]->getNumber();
+    Items[i]->setNumber(newNumber);
+    update(i, diff);
 }
 
 std::string List::getName() {
