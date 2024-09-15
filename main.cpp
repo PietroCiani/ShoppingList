@@ -95,6 +95,7 @@ int main(){
                 drawables.push_back(std::make_unique<Button>(remove));
             }
         } else {
+            // Print search results
             for (int i = 0; i < found.size(); ++i) {
                 Prod& prod = shoppingList.getItems(found[i]);
                 Text text(prod.getName() + ": " + std::to_string(prod.getNumber()), {w.x * 0.2f, yPos+15.f}, font);

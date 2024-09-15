@@ -5,6 +5,11 @@
 #include "List.h"
 #include <algorithm>
 
+std::string toLower(const std::string& str) {
+    std::string lowerStr = str;
+    std::transform(lowerStr.begin(), lowerStr.end(), lowerStr.begin(), ::tolower);
+    return lowerStr;
+}
 
 void List::printList() const {
     std::cout << "Lista '"<< Name << "'" << std::endl;
@@ -42,7 +47,7 @@ void List::removeProd(int i) {
 std::vector<int> List::searchProdIndex(const std::string &name) {
     std::vector<int> results{};
     for (int i = 0; i < Items.size(); ++i) {
-        if (Items[i]->getName().rfind(name, 0) == 0) { // rfind(name, 0) == 0 controlla se inizia con "name"
+        if (toLower(Items[i]->getName()).rfind(toLower(name), 0) == 0) {
             results.push_back(i);
         }
     }
