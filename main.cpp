@@ -70,54 +70,43 @@ int main(){
         drawables.push_back(std::make_unique<Text>(insert));
         drawables.push_back(std::make_unique<Text>(title));
 
-        if(!searching) {
-            // Print full list
-            for (int i = 0; i < shoppingList.getItemsSize(); ++i) {
-                Prod& prod = shoppingList.getItems(i);
-                Text text(prod.getName() + ": " + std::to_string(prod.getNumber()), {w.x * 0.2f, yPos+15.f}, font);
-                if (prod.isCount()){
-                    Button decrease("-", {w.x * 0.7f, yPos}, [&shoppingList, prod, i](){
-                        shoppingList.setNumber(i, prod.getNumber() - 1);
-                    }, font);
-                    Button increase("+", {w.x * 0.8f, yPos}, [&shoppingList, prod, i](){
-                        shoppingList.setNumber(i, prod.getNumber() + 1);
-                    }, font);
-                    drawables.push_back(std::make_unique<Button>(decrease));
-                    drawables.push_back(std::make_unique<Button>(increase));
-                }
-                Button remove("x", {w.x * 0.9f, yPos}, [&shoppingList, i](){
-                        shoppingList.removeProd(i);
-                    }, font);
+        auto renderItem = [&](Prod& prod, int index) {
+            Text text(prod.getName() + ": " + std::to_string(prod.getNumber()), {w.x * 0.2f, yPos + 15.f}, font);
 
-                yPos += step;
-
-                drawables.push_back(std::make_unique<Text>(text));
-                drawables.push_back(std::make_unique<Button>(remove));
-            }
-        } else {
-            // Print search results
-            for (int i = 0; i < found.size(); ++i) {
-                Prod& prod = shoppingList.getItems(found[i]);
-                Text text(prod.getName() + ": " + std::to_string(prod.getNumber()), {w.x * 0.2f, yPos+15.f}, font);
-                if (prod.isCount()){
-                    Button decrease("-", {w.x * 0.7f, yPos}, [&shoppingList, prod, i](){
-                        shoppingList.setNumber(i, prod.getNumber() - 1);
-                    }, font);
-                    Button increase("+", {w.x * 0.8f, yPos}, [&shoppingList, prod, i](){
-                        shoppingList.setNumber(i, prod.getNumber() + 1);
-                    }, font);
-                    drawables.push_back(std::make_unique<Button>(decrease));
-                    drawables.push_back(std::make_unique<Button>(increase));
-                }
-                Button remove("x", {w.x * 0.9f, yPos}, [&shoppingList, found, i](){
-                    shoppingList.removeProd(found[i]);
+            if (prod.isCount()) {
+                Button decrease("-", {w.x * 0.7f, yPos}, [&shoppingList, index, &prod]() {
+                    shoppingList.setNumber(index, prod.getNumber() - 1);
+                }, font);
+                Button increase("+", {w.x * 0.8f, yPos}, [&shoppingList, index, &prod]() {
+                    shoppingList.setNumber(index, prod.getNumber() + 1);
                 }, font);
 
-                yPos += step;
-                drawables.push_back(std::make_unique<Text>(text));
-                drawables.push_back(std::make_unique<Button>(remove));
+                drawables.push_back(std::make_unique<Button>(decrease));
+                drawables.push_back(std::make_unique<Button>(increase));
+            }
+            Button remove("x", {w.x * 0.9f, yPos}, [&shoppingList, index]() {
+                shoppingList.removeProd(index);
+            }, font);
+
+            yPos += step;
+            drawables.push_back(std::make_unique<Text>(text));
+            drawables.push_back(std::make_unique<Button>(remove));
+        };
+
+        if (!searching) {
+            // Render full list
+            for (int i = 0; i < shoppingList.getItemsSize(); ++i) {
+                Prod& prod = shoppingList.getItems(i);
+                renderItem(prod, i);
+            }
+        } else {
+            // Render found items
+            for (int i = 0; i < found.size(); ++i) {
+                Prod& prod = shoppingList.getItems(found[i]);
+                renderItem(prod, found[i]);
             }
         }
+
 
         sf::RectangleShape bottomRect({w.x, 100.f});
         bottomRect.setPosition({0, w.y*lastRow - 10.f});
