@@ -20,14 +20,10 @@ void List::printList() const {
     std::cout << "--------------------" << std::endl;
 }
 
-void List::addProd(const Prod& prod) {
-    Items.push_back(std::make_unique<Prod>(prod));
-    NumItems += prod.getNumber();
-}
-
 void List::addProd(const std::string &name, const int &amount) {
     Prod prod(name, amount);
-    addProd(prod);
+    Items.push_back(std::make_unique<Prod>(prod));
+    NumItems += prod.getNumber();
 }
 
 void List::update(int i, int diff) {

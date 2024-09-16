@@ -17,9 +17,9 @@ class List : public std::enable_shared_from_this<List> {
 public:
     explicit List(const std::string &name) : Name(name), NumItems(0) {}
 
-    void addProd(const Prod& prod);
+//    void addProd(const Prod& prod);
 
-    void addProd(const std::string &name, const int &amount = 1);
+    void addProd(const std::string &name, const int &amount = 0);
 
     void setNumber(int i, int newAmount);
 
