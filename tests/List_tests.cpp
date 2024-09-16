@@ -8,60 +8,45 @@
 
 class ListTest : public ::testing::Test {
 protected:
-    List list1, list2;
+    List casa;
 
-    ListTest() : list1("Casa"), list2("Grigliata") {}
+    ListTest() : casa("Casa") {}
 
     void SetUp() override {
-        list1.addProd("Latte");
-        list1.addProd("Uova", 6);
-
-        list2.addProd("Carbonella");
-        list2.addProd("Hamburger", 5);
-        list2.addProd("Salsicce", 10);
+        casa.addProd("Latte");
+        casa.addProd("Uova");
+        casa.addProd("Carbonella");
+        casa.addProd("Hamburger", 5);
+        casa.addProd("Salsicce", 10);
     }
 };
 
-TEST_F(ListTest, SearchExistingProduct) {
-    EXPECT_EQ(list1.searchProd("Uova").getName(), "Uova");
-    EXPECT_EQ(list1.searchProd("Uova").getAmount(), 6);
+TEST_F(ListTest, Search) {
+    EXPECT_EQ(casa.getItems(casa.searchProdIndex("latte").front()), 0);
+    EXPECT_EQ(casa.getItems(casa.searchProdIndex("Latte").front()).getNumber(), 0);
+
+    EXPECT_EQ(casa.searchProdIndex("dfsdfdfs").empty(), true);
 }
 
-TEST_F(ListTest, SearchNonExistingProduct) {
-    EXPECT_EQ(list1.searchProdIndex("Biscotti"), -1);
-    EXPECT_EQ(list1.searchProdIndex("sfdfsdfsd"), -1); //FIXME handle -1
+TEST_F(ListTest, Add) {
+    casa.addProd("Pane");
+
+    EXPECT_EQ(casa.searchProdIndex("Pane"), 5);
+    EXPECT_EQ(casa.getItems(casa.searchProdIndex("Pane").front).getNumber(), 0);
 }
 
-TEST_F(ListTest, AddProd) {
-    list1.addProd("Pane", 3);
+TEST_F(ListTest, Remove) {
+    int oldSize = casa.getItemsSize();
+    casa.removeProd(casa.searchProdIndex("Latte").front());
 
-    EXPECT_EQ(list1.searchProdIndex("Pane"), 2);
-    EXPECT_EQ(list1.searchProd("Pane").getAmount(), 3);
+    EXPECT_EQ(casa.getItems(casa.searchProdIndex("Latte").empty()), true);
+    EXPECT_EQ(casa.getItemsSize(), oldSize);
 }
 
-TEST_F(ListTest, RemoveProd) {
-    list1.removeProd(Prod("Latte"));
+TEST_F(ListTest, editNumber) {
+    EXPECT_EQ(casa.getItems(casa.searchProdIndex("Uova").front()).getNumber(), 0);
 
-    EXPECT_EQ(list1.searchProdIndex("Latte"), -1);
-}
-
-TEST_F(ListTest, RemoveNonExistingProd) {
-    int oldSize = list1.getItemsSize();
-    list1.removeProd(Prod("Burro"));
-
-    EXPECT_EQ(list1.searchProdIndex("Burro"), -1);
-    EXPECT_EQ(list1.getItemsSize(), oldSize);
-}
-
-TEST_F(ListTest, UpdateProdAmount) {
-    list1.setAmount("Uova", 12);
-
-    EXPECT_EQ(list1.searchProd("Uova").getAmount(), 12);
-}
-
-TEST_F(ListTest, UpdateNonExistingProdAmount) {
-    list1.setAmount("fsfdfsd", 12);
-
-    EXPECT_EQ(list1.searchProd("dfsdfsdf").getAmount(), 12);
+    casa.setNumber(casa.searchProdIndex("Uova").front(),12);
+    EXPECT_EQ(casa.getItems(casa.searchProdIndex("Uova").front()).getNumber(), 12);
 }
 
