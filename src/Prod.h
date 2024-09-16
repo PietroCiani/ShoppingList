@@ -16,9 +16,11 @@ class List;
 
 class Prod {
 public:
-    explicit Prod(const std::string &name) : name(name), number(1), count(false) {}
+    explicit Prod(const std::string &name) : name(name), number(0), count(false) {}
 
-    Prod(const std::string &name, unsigned short int number) : name(name), number(number), count(true) {}
+    Prod(const std::string &name, unsigned short int number) : name(name), number(number), count(true){
+        if (number == 0) count = false;
+    }
 
     void setNumber(int newNumber);
 
@@ -27,6 +29,8 @@ public:
     std::string getName() const;
 
     bool isCount() const;
+
+    void setCount(bool count);
 
     bool operator==(const Prod &other) const;
 

@@ -20,6 +20,10 @@ std::string Prod::getName() const {
     return name;
 }
 
+void Prod::setCount(bool count) {
+    Prod::count = count;
+}
+
 bool Prod::isCount() const {
     return count;
 }

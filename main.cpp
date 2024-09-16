@@ -28,7 +28,7 @@ std::vector<int> findButtonIndices(const std::vector<std::unique_ptr<sf::Drawabl
 
 int main(){
     List shoppingList("Casa");
-    shoppingList.addProd("Uova", 6);
+    shoppingList.addProd("Uova");
     shoppingList.addProd("Latte", 2);
     shoppingList.addProd("Pane");
 
@@ -71,25 +71,27 @@ int main(){
         drawables.push_back(std::make_unique<Text>(title));
 
         auto renderItem = [&](Prod& prod, int index) {
-            Text text(prod.getName() + ": " + std::to_string(prod.getNumber()), {w.x * 0.2f, yPos + 15.f}, font);
+            Text text(prod.getName(), {w.x * 0.2f, yPos + 15.f}, font);
 
             if (prod.isCount()) {
+                text.setString(text.getString() + ": " + std::to_string(prod.getNumber()));
                 Button decrease("-", {w.x * 0.7f, yPos}, [&shoppingList, index, &prod]() {
                     shoppingList.setNumber(index, prod.getNumber() - 1);
                 }, font);
-                Button increase("+", {w.x * 0.8f, yPos}, [&shoppingList, index, &prod]() {
-                    shoppingList.setNumber(index, prod.getNumber() + 1);
-                }, font);
 
                 drawables.push_back(std::make_unique<Button>(decrease));
-                drawables.push_back(std::make_unique<Button>(increase));
             }
+            Button increase("+", {w.x * 0.8f, yPos}, [&shoppingList, index, &prod]() {
+                shoppingList.setNumber(index, prod.getNumber() + 1);
+                shoppingList.getItems(index).setCount(true);
+            }, font);
             Button remove("x", {w.x * 0.9f, yPos}, [&shoppingList, index]() {
                 shoppingList.removeProd(index);
             }, font);
 
             yPos += step;
             drawables.push_back(std::make_unique<Text>(text));
+            drawables.push_back(std::make_unique<Button>(increase));
             drawables.push_back(std::make_unique<Button>(remove));
         };
 
@@ -121,10 +123,10 @@ int main(){
                     inputText.clear();
                 } else if (found.size() == 1) {
                     std::cout << shoppingList.getItems(found[0]).getName() << " è gia nella lista (+1)" << std::endl;
-                    shoppingList.getItems(found[0]).setNumber(shoppingList.getItems(found[0]).getNumber()+1);
+                    //shoppingList.getItems(found[0]).setNumber(shoppingList.getItems(found[0]).getNumber()+1);
                     inputText.clear();
                 } else {
-                    std::cout << "Trovati " << found.size() << " prodotti simili:" << std::endl;
+                    std::cout << "Trovati " << found.size() << " prodotti simili" << std::endl;
                 }
             }
         }, font, {70,30});
