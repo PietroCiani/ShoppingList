@@ -9,11 +9,11 @@
 TEST(ProdTest, DefaultConstructor) {
 Prod prod("Pane");
 EXPECT_EQ(prod.getName(), "Pane");
-EXPECT_EQ(prod.getAmount(), 1);
+EXPECT_EQ(prod.getNumber(), 1);
 }
 
 TEST(ProdTest, SetAmount) {
     Prod prod("Latte");
-    prod.setAmount(3, false);
-    EXPECT_EQ(prod.getAmount(), 3);
+    prod.setNumber(3);
+    EXPECT_EQ(prod.getNumber(), 3);
 }

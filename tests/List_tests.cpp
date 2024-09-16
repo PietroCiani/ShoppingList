@@ -22,7 +22,7 @@ protected:
 };
 
 TEST_F(ListTest, Search) {
-    EXPECT_EQ(casa.getItems(casa.searchProdIndex("latte").front()), 0);
+    EXPECT_EQ(casa.searchProdIndex("latte").front(), 0);
     EXPECT_EQ(casa.getItems(casa.searchProdIndex("Latte").front()).getNumber(), 0);
 
     EXPECT_EQ(casa.searchProdIndex("dfsdfdfs").empty(), true);
@@ -31,8 +31,8 @@ TEST_F(ListTest, Search) {
 TEST_F(ListTest, Add) {
     casa.addProd("Pane");
 
-    EXPECT_EQ(casa.searchProdIndex("Pane"), 5);
-    EXPECT_EQ(casa.getItems(casa.searchProdIndex("Pane").front).getNumber(), 0);
+    EXPECT_EQ(casa.searchProdIndex("Pane").front(), 5);
+    EXPECT_EQ(casa.getItems(casa.searchProdIndex("Pane").front()).getNumber(), 0);
 }
 
 TEST_F(ListTest, Remove) {

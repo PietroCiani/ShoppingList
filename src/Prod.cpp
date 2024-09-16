@@ -29,5 +29,5 @@ bool Prod::isCount() const {
 }
 
 bool Prod::operator==(const Prod &other) const {
-    return name == other.name;
+    return (name == other.name && number == other.number && count == other.count);
 }
