@@ -103,9 +103,9 @@ int main(){
             }
         } else {
             // Render found items
-            for (int i = 0; i < found.size(); ++i) {
-                Prod& prod = shoppingList.getItems(found[i]);
-                renderItem(prod, found[i]);
+            for (int i : found) {
+                Prod& prod = shoppingList.getItems(i);
+                renderItem(prod, i);
             }
         }
 

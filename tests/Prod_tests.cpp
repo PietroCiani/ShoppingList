@@ -17,11 +17,8 @@ TEST(ProdTest, DefaultConstructor) {
 TEST(ProdTest, editNumber) {
     Prod prod("Latte");
 
-    testing::internal::CaptureStderr();  // Capture the error output
-    prod.setNumber(3);  // This should throw a logic_error
-    std::string output = testing::internal::GetCapturedStderr();
-    EXPECT_NE(output.find("Error"), std::string::npos);
-    EXPECT_EQ(prod.getNumber(), 0);  // Number should remain unchanged
+    ASSERT_THROW(prod.setNumber(3), std::logic_error);
+
     /*
     EXPECT_THROW(prod.setNumber(3), std::logic_error);
     // oppure
