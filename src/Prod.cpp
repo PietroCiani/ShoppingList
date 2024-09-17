@@ -7,9 +7,17 @@
 
 
 void Prod::setNumber(int newNumber) {
-    std::cout << "Cambio quantità di '" << name << "':" << number << " -> " << newNumber << std::endl << std::endl;
-    int diff = newNumber - number;
-    number = newNumber;
+    try {
+        if (count) {
+            std::cout << "Cambio quantità di '" << name << "':" << number << " -> " << newNumber << std::endl << std::endl;
+            int diff = newNumber - number;
+            number = newNumber;
+        } else {
+            throw std::logic_error("Errore: Stai cercando di modificare la quantità di un prodotto !count: '" + name + "'");
+        }
+    } catch (std::logic_error &e) {
+        std::cerr << e.what() << std::endl;
+    }
 }
 
 unsigned short int Prod::getNumber() const {

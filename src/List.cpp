@@ -27,7 +27,7 @@ void List::addProd(const std::string &name, const int &amount) {
 }
 
 void List::update(int i, int diff) {
-    if (Items[i]->getNumber() == 0) {
+    if (Items[i]->getNumber() == 0 && Items[i]->isCount()) {
         removeProd(i);
     } else {
         NumItems += diff;
@@ -55,9 +55,12 @@ Prod & List::getItems(int index) {
 }
 
 void List::setNumber(int i, int newNumber) {
+    Items[i]->setCount(true);
     int diff = newNumber - Items[i]->getNumber();
     Items[i]->setNumber(newNumber);
     update(i, diff);
+
+
 }
 
 std::string List::getName() {
