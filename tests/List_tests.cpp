@@ -39,8 +39,8 @@ TEST_F(ListTest, Remove) {
     int oldSize = casa.getItemsSize();
     casa.removeProd(casa.searchProdIndex("Latte").front());
 
-    EXPECT_EQ(casa.getItems(casa.searchProdIndex("Latte").empty()), true);
-    EXPECT_EQ(casa.getItemsSize(), oldSize);
+    EXPECT_EQ(casa.searchProdIndex("Latte").empty(), true);
+    EXPECT_EQ(casa.getItemsSize(), oldSize-1);
 }
 
 TEST_F(ListTest, editNumber) {
